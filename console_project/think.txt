@@ -1,0 +1,31 @@
+파일 구조
+
+실행파일
+init_data.txt
+map_datas
+ㄴmap_info.txt
+ㄴmap_num.txt
+entity_datas
+ㄴenties
+
+
+
+파일 내용
+init_data.txt
+console_size_width=
+console_size_height=
+
+stages_info.txt
+포함 데이터
+맵 사이즈
+맵 갯수
+각 맵의 이름
+
+stage_num
+스테이지 구성
+
+entity_datas
+식별값 (string)
+렌더 데이터
+패턴 데이터
+공격 빈도

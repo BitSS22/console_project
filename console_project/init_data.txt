@@ -1,0 +1,2 @@
+console_size_width=50
+console_size_height=50
