@@ -74,6 +74,8 @@ bool Init()
 	consoleCursorInfo.dwSize = 1;
 	SetConsoleCursorInfo(console_handle, &consoleCursorInfo);
 
+	current_scene = Scene::TITLE;
+
 	return true;
 }
 
