@@ -4,7 +4,7 @@
 #include <filesystem>
 #include <fstream>
 #include <array>
-#include <timeapi.h>
+#include <cstdint>
 #pragma comment(lib, "winmm.lib")
 
 // define options
@@ -17,6 +17,7 @@
 
 #include "Scenes.h"
 #include "ConsoleDatas.h"
+#include "Time.h"
 
 bool Init();
 void KeyCheck();
@@ -32,11 +33,19 @@ int main()
 		return 0;
 	}
 
+	TimeInit();
+
 	// game loop
 	while (running_process)
 	{
 		KeyCheck();
 		SceneLoop();
+		static size_t i = 0;
+		static size_t j = 0;
+		Log(i++, '\n');
+		if (i % TARGET_FRAME == 0)
+			Log("TERGET_FRAME / J == ", j++, '\n');
+		AsyncFrame();
 	}
 
 	if (console_back_buffer != nullptr)
