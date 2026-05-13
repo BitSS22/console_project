@@ -4,6 +4,15 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ConsoleControl.cpp" />
     <ClCompile Include="ConsoleDatas.cpp" />
+    <ClCompile Include="Title.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Ending.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConsoleControl.h" />
@@ -12,8 +21,25 @@
     <ClInclude Include="File.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="ConsoleDatas.h" />
+    <ClInclude Include="Title.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Ending.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="think.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{a119c149-6c89-49c5-8aff-01492cff9aae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

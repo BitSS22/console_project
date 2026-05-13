@@ -15,14 +15,12 @@
 #include "File.h"
 #include "LogHelper.h"
 
+#include "Scenes.h"
 #include "ConsoleDatas.h"
 
 bool Init();
-bool InitData(std::ifstream& file);
 void KeyCheck();
-void Update();
-void Render();
-bool IsPressKey(int key);
+void SceneLoop();
 
 int main()
 {
@@ -38,8 +36,7 @@ int main()
 	while (running_process)
 	{
 		KeyCheck();
-		Update();
-		Render();
+		SceneLoop();
 	}
 
 	if (console_back_buffer != nullptr)
@@ -57,7 +54,7 @@ bool Init()
 	// key input
 	for (size_t i = 0; i < KeyList.size(); ++i)
 	{
-		KeyList[i].type = i;
+		KeyList[i].type = static_cast<unsigned char>(i);
 		KeyList[i].press = false;
 	}
 
@@ -65,6 +62,7 @@ bool Init()
 	std::filesystem::path path;
 
 	path = std::filesystem::current_path() / "init_data.txt";
+	bool InitData(std::ifstream & file);
 	if (!FileRead(path, InitData))
 		return false;
 
@@ -136,47 +134,25 @@ void KeyCheck()
 		KeyList[i].press = GetAsyncKeyState(static_cast<int>(KeyList[i].type)) & 0x8001;
 }
 
-bool IsPressKey(int key)
-{
-	return KeyList[key].press;
-}
-
-void Title()
-{
-
-}
-
-void Game()
-{
-
-}
-
-void Ending()
-{
-
-}
-
-void Update()
+void SceneLoop()
 {
 	switch (current_scene)
 	{
 	case Scene::TITLE:
 		Title();
+		TitleRender();
 		break;
 	case Scene::GAME:
 		Game();
+		GameRender();
 		break;
 	case Scene::ENDING:
 		Ending();
+		EndingRender();
 		break;
 	default:
 		Log("Unknown scene. current_scene : ", static_cast<int>(current_scene), '\n');
 		running_process = false;
 		break;
 	}
-}
-
-void Render()
-{
-	
 }

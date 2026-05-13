@@ -3,8 +3,10 @@
 실행파일
 init_data.txt
 map_datas
-ㄴmap_info.txt
-ㄴmap_num.txt
+ㄴtitle.txt
+ㄴEnding.txt
+ㄴstage_info.txt
+ㄴstage_.txt
 entity_datas
 ㄴenties
 
@@ -29,3 +31,6 @@ entity_datas
 렌더 데이터
 패턴 데이터
 공격 빈도
+
+
+적에게 부여할 값?

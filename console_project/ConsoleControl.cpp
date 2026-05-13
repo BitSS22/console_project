@@ -3,6 +3,11 @@
 
 namespace ctrl
 {
+	bool IsPressKey(int key)
+	{
+		return KeyList[key].press;
+	}
+
 	void CursorMove(IntVec2 postion)
 	{
 		SetConsoleCursorPosition(console_handle, postion);

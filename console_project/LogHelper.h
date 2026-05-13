@@ -1,5 +1,8 @@
 #pragma once
 #include <ostream>
+#include <fstream>
+
+#include "Define.h"
 
 template <typename Text>
 concept can_out_stream = requires(std::ostream& stream, Text&& data)

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <exception>
 #include <Windows.h>
 
@@ -13,7 +13,7 @@ enum class Scene
 
 struct Key
 {
-	char type;
+	unsigned char type;
 	bool press;
 };
 
