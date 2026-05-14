@@ -139,6 +139,7 @@
     <ClInclude Include="ConsoleDatas.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Ending.h" />
+    <ClInclude Include="EntityAttackPattern.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="LogHelper.h" />

@@ -11,6 +11,7 @@ concept can_out_stream = requires(std::ostream& stream, Text&& data)
 };
 
 #ifdef LOG
+#include <iostream>
 template <can_out_stream... Text>
 void Log(Text&&... arg)
 {

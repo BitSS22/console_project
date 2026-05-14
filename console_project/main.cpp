@@ -19,45 +19,42 @@
 #include "ConsoleDatas.h"
 #include "Time.h"
 
+#include "Title.h"
+#include "Game.h"
+#include "Ending.h"
+
 bool Init();
+void Release();
 void KeyCheck();
 void SceneLoop();
 
 int main()
 {
-	timeBeginPeriod(1);
-
 	if (!Init())
 	{
 		Log("Init fail.\n");
 		return 0;
 	}
 
-	TimeInit();
-
 	// game loop
 	while (running_process)
 	{
 		KeyCheck();
 		SceneLoop();
-		static size_t i = 0;
-		static size_t j = 0;
-		Log(i++, '\n');
-		if (i % TARGET_FRAME == 0)
-			Log("TERGET_FRAME / J == ", j++, '\n');
+
 		AsyncFrame();
 	}
 
-	if (console_back_buffer != nullptr)
-		free(console_back_buffer);
+	Release();
 
-	timeEndPeriod(1);
 	return 0;
 }
 
 // 가장 먼저 호출되야 함
 bool Init()
 {
+	timeBeginPeriod(1);
+
 	console_handle = GetStdHandle(STD_OUTPUT_HANDLE);
 
 	// key input
@@ -71,9 +68,17 @@ bool Init()
 	std::filesystem::path path;
 
 	path = std::filesystem::current_path() / "init_data.txt";
-	bool InitData(std::ifstream & file);
-	if (!FileRead(path, InitData))
+	bool LoadInitData(std::ifstream & file);
+	if (!FileRead(path, LoadInitData))
 		return false;
+
+	if (!TitleDataInit())
+	{
+		Log("Title Data Init Fail.\n");
+		return false;
+	}
+	//GameDataInit();
+	//EndingDataInit();
 
 	// hide cursor
 	CONSOLE_CURSOR_INFO consoleCursorInfo;
@@ -83,10 +88,24 @@ bool Init()
 
 	current_scene = Scene::TITLE;
 
+	TimeInit();
+
 	return true;
 }
 
-bool InitData(std::ifstream& file)
+void Release()
+{
+	if (console_back_buffer != nullptr)
+		free(console_back_buffer);
+
+	TitleDataRelease();
+	//GameDataRelease();
+	//EndingDataRelease();
+
+	timeEndPeriod(1);
+}
+
+bool LoadInitData(std::ifstream& file)
 {
 	std::string line;
 

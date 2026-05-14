@@ -3,7 +3,6 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ConsoleControl.cpp" />
-    <ClCompile Include="ConsoleDatas.cpp" />
     <ClCompile Include="Title.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
@@ -13,6 +12,7 @@
     <ClCompile Include="Ending.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConsoleControl.h" />
@@ -33,6 +33,10 @@
     <ClInclude Include="Ending.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Time.h" />
+    <ClInclude Include="EntityAttackPattern.h">
+      <Filter>EntityDatas</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="think.txt" />
@@ -40,6 +44,9 @@
   <ItemGroup>
     <Filter Include="Scenes">
       <UniqueIdentifier>{a119c149-6c89-49c5-8aff-01492cff9aae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EntityDatas">
+      <UniqueIdentifier>{8524917b-3063-4679-b570-a5aa95f8e05c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

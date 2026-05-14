@@ -11,6 +11,13 @@ enum class Scene
 	ENUM_SIZE
 };
 
+//적이 가질 데이터
+//현재 위치
+//움직임 패턴(정의된 움직임의 조합 : 공격, 움직임, 회전 등, 루프로 작동)
+//패턴 iterator
+//앞(forward) 방향
+//공격 패턴(정의 된 것 중 하나)
+
 struct Key
 {
 	unsigned char type;

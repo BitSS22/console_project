@@ -16,3 +16,13 @@ void ConsoleClear(char ch = ' ')
 	DWORD output;
 	FillConsoleOutputCharacter(console_handle, ch, console_size.x * console_size.y, IntVec2(), &output);
 }
+
+inline size_t GetIdx(IntVec2 position)
+{
+	return GetIdx(position.x, position.y);
+}
+
+inline size_t GetIdx(int x, int y)
+{
+	return y * console_size.x + x;
+}

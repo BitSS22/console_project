@@ -19,5 +19,7 @@ bool FileRead(const std::filesystem::path& path, Func work)
 		Log("file read fail.", '\n');
 		return false;
 	}
+
+	Log("file read Success.", '\n');
 	return true;
 }
