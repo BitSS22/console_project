@@ -34,11 +34,6 @@ int main()
 		return 0;
 	}
 
-#ifdef CONSOLE_LOG
-	Log("Init Succese. Press Any Key.\n");
-	_getch();
-#endif 
-
 	// game loop
 	while (running_process)
 	{
@@ -46,10 +41,6 @@ int main()
 		SceneLoop();
 
 		AsyncFrame();
-		//static size_t frame = 0;
-		//++frame;
-		//if (frame % TARGET_FRAME == 0)
-		//	Log(frame / TARGET_FRAME, "second.\n");
 	}
 
 	Release();
@@ -107,6 +98,11 @@ bool Init()
 	SetConsoleCursorInfo(console_handle, &consoleCursorInfo);
 
 	current_scene = Scene::TITLE;
+
+#ifdef CONSOLE_LOG
+	Log("Init Succese. Press Any Key.\n");
+	auto _ = _getch();
+#endif 
 
 	TimeInit();
 

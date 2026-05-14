@@ -38,10 +38,12 @@ bool Work(std::ifstream& file)
 			return false;
 		}
 
+		size_t prevLength = line.length();
 		if (line.length() < console_size.x)
 			line.resize(console_size.x, ' ');
 
-		Log("read data : ", line, '\n');
+		Log("line ", lineCount, ":", line, ": length ", prevLength, '\n');
+
 		memcpy(title_data + (lineCount * console_size.x), line.c_str(), line.size());
 
 		++lineCount;
@@ -50,6 +52,12 @@ bool Work(std::ifstream& file)
 	if (lineCount < console_size.y)
 	{
 		memset(title_data + (lineCount * console_size.x), ' ', (console_size.y - lineCount) * console_size.x);
+		line = std::string(console_size.x, ' ');
+		while (lineCount < console_size.y)
+		{
+			Log("line ", lineCount, ":", line, ": length 0\n");
+			++lineCount;
+		}
 	}
 
 	return true;
