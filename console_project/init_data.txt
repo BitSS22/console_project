@@ -1,2 +1,2 @@
 console_size_width=20
-console_size_height=20
+console_size_height=10

@@ -9,7 +9,7 @@
 #ifdef LOG
 	#ifdef CONSOLE_LOG
 		#define LOG_OSTREAM std::cout
-	#elif FILE_LOG
+	#else
 		#define LOG_OSTREAM logger_stream
 	#endif
 #endif

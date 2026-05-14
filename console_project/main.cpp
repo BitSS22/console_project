@@ -153,11 +153,25 @@ bool LoadInitData(std::ifstream& file)
 
 		if (key == "console_size_width")
 		{
-			console_size.x = std::stoi(value);
+			int i = std::stoi(value);
+			if (i < 5)
+			{
+				Log("console_size_width need greater then 4.\n");
+				return false;
+			}
+
+			console_size.x = i;
 		}
 		else if (key == "console_size_height")
 		{
-			console_size.y = std::stoi(value);
+			int i = std::stoi(value);
+			if (i < 5)
+			{
+				Log("console_size_height need greater then 4.\n");
+				return false;
+			}
+
+			console_size.y = i;
 		}
 		else
 		{
@@ -179,7 +193,9 @@ bool LoadInitData(std::ifstream& file)
 void KeyCheck()
 {
 	for (size_t i = 0; i < KeyList.size(); ++i)
+	{
 		KeyList[i].press = GetAsyncKeyState(static_cast<int>(KeyList[i].type)) & 0x8001;
+	}
 }
 
 void SceneLoop()

@@ -28,13 +28,13 @@ bool Work(std::ifstream& file)
 	{
 		if (line.length() > console_size.x)
 		{
-			Log("The width is too large.\nline : ", lineCount + 1, '\n');
+			Log("The width is too large.\nline : ", lineCount + 1, ", length : ", line.length(), '\n');
 			return false;
 		}
 
 		if (lineCount >= console_size.y)
 		{
-			Log("The height is too high.\nline : ", lineCount + 1, '\n');
+			Log("The height is too high.\nline : ", lineCount + 1, ", length : ", line.length(), '\n');
 			return false;
 		}
 
@@ -45,6 +45,11 @@ bool Work(std::ifstream& file)
 		memcpy(title_data + (lineCount * console_size.x), line.c_str(), line.size());
 
 		++lineCount;
+	}
+
+	if (lineCount < console_size.y)
+	{
+		memset(title_data + (lineCount * console_size.x), ' ', (console_size.y - lineCount) * console_size.x);
 	}
 
 	return true;
