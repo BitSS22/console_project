@@ -1,6 +1,6 @@
 #pragma once
 
 bool TitleDataInit();
-void Title();
+void TitleUpdate();
 void TitleRender();
 void TitleDataRelease();

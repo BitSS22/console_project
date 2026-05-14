@@ -1,9 +1,16 @@
 #include "Ending.h"
 
-void Ending()
+bool EndingDataInit()
 {
+	return true;
 }
+
+void EndingUpdate()
+{}
 
 void EndingRender()
 {
 }
+
+void EndingDataRelease()
+{}

@@ -1,4 +1,6 @@
 #include "ConsoleControl.h"
+#include <iostream>
+#include <string>
 #include "ConsoleDatas.h"
 
 bool IsPressKey(int key)
@@ -11,10 +13,14 @@ void CursorMove(IntVec2 postion)
 	SetConsoleCursorPosition(console_handle, postion);
 }
 
-void ConsoleClear(char ch = ' ')
+void ConsoleClear(char ch)
 {
-	DWORD output;
-	FillConsoleOutputCharacter(console_handle, ch, console_size.x * console_size.y, IntVec2(), &output);
+	std::string fill(console_size.x, ch);
+	for (size_t y = 0; y < console_size.y; ++y)
+	{
+		CursorMove(IntVec2(0, y));
+		std::cout << fill;
+	}
 }
 
 inline size_t GetIdx(IntVec2 position)

@@ -59,9 +59,9 @@ bool TitleDataInit()
 	return true;
 }
 
-void Title()
+void TitleUpdate()
 {
-	if (IsPressKey(VK_SPACE))
+	if (IsPressKey(VK_RETURN))
 	{
 		current_scene = Scene::GAME;
 	}

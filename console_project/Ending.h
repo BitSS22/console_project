@@ -1,4 +1,6 @@
 #pragma once
 
-void Ending();
+bool EndingDataInit();
+void EndingUpdate();
 void EndingRender();
+void EndingDataRelease();

@@ -1,4 +1,6 @@
 #pragma once
 
-void Game();
+bool GameDataInit();
+void GameUpdate();
 void GameRender();
+void GameDataRelease();

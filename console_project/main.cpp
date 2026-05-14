@@ -5,6 +5,8 @@
 #include <fstream>
 #include <array>
 #include <cstdint>
+#include <string>
+#include <conio.h>
 #pragma comment(lib, "winmm.lib")
 
 // define options
@@ -19,10 +21,6 @@
 #include "ConsoleDatas.h"
 #include "Time.h"
 
-#include "Title.h"
-#include "Game.h"
-#include "Ending.h"
-
 bool Init();
 void Release();
 void KeyCheck();
@@ -36,6 +34,11 @@ int main()
 		return 0;
 	}
 
+#ifdef CONSOLE_LOG
+	Log("Init Succese. Press Any Key.\n");
+	_getch();
+#endif 
+
 	// game loop
 	while (running_process)
 	{
@@ -43,6 +46,10 @@ int main()
 		SceneLoop();
 
 		AsyncFrame();
+		//static size_t frame = 0;
+		//++frame;
+		//if (frame % TARGET_FRAME == 0)
+		//	Log(frame / TARGET_FRAME, "second.\n");
 	}
 
 	Release();
@@ -56,6 +63,9 @@ bool Init()
 	timeBeginPeriod(1);
 
 	console_handle = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	//std::cout.tie(nullptr);
+	//std::ios_base::sync_with_stdio(false);
 
 	// key input
 	for (size_t i = 0; i < KeyList.size(); ++i)
@@ -77,8 +87,18 @@ bool Init()
 		Log("Title Data Init Fail.\n");
 		return false;
 	}
-	//GameDataInit();
-	//EndingDataInit();
+
+	if (!GameDataInit())
+	{
+		Log("Game Data Init Fail.\n");
+		return false;
+	}
+
+	if (!EndingDataInit())
+	{
+		Log("Ending Data Init Fail.\n");
+		return false;
+	}
 
 	// hide cursor
 	CONSOLE_CURSOR_INFO consoleCursorInfo;
@@ -99,8 +119,8 @@ void Release()
 		free(console_back_buffer);
 
 	TitleDataRelease();
-	//GameDataRelease();
-	//EndingDataRelease();
+	GameDataRelease();
+	EndingDataRelease();
 
 	timeEndPeriod(1);
 }
@@ -164,23 +184,34 @@ void KeyCheck()
 
 void SceneLoop()
 {
+	// back buffer clear
+	memset(console_back_buffer, ' ', console_size.x * console_size.y);
+
 	switch (current_scene)
 	{
 	case Scene::TITLE:
-		Title();
+		TitleUpdate();
 		TitleRender();
 		break;
 	case Scene::GAME:
-		Game();
+		GameUpdate();
 		GameRender();
 		break;
 	case Scene::ENDING:
-		Ending();
+		EndingUpdate();
 		EndingRender();
 		break;
 	default:
 		Log("Unknown scene. current_scene : ", static_cast<int>(current_scene), '\n');
 		running_process = false;
 		break;
+	}
+
+	// buffer draw
+	for (size_t y = 0; y < console_size.y; ++y)
+	{
+		CursorMove(IntVec2(0, y));
+		std::string_view view(console_back_buffer + (console_size.x * y), console_size.x);
+		std::cout << view;
 	}
 }

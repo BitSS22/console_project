@@ -1,9 +1,21 @@
 #include "Game.h"
 
-void Game()
+bool GameDataInit()
 {
+	return true;
+}
+
+void GameUpdate()
+{
+
 }
 
 void GameRender()
 {
+
+}
+
+void GameDataRelease()
+{
+
 }
