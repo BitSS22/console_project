@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <exception>
 #include <Windows.h>
+#include <cmath>
 
 enum class Scene
 {
@@ -33,6 +34,12 @@ struct IntVec2
 	{
 		return { left.x + right.x, left.y + right.y };
 	}
+	IntVec2& operator+=(IntVec2 other)
+	{
+		x += other.x;
+		y += other.y;
+		return *this;
+	}
 	friend IntVec2 operator-(IntVec2 left, IntVec2 right)
 	{
 		return { left.x - right.x, left.y - right.y };
@@ -62,5 +69,33 @@ struct IntVec2
 		coord.X = x;
 		coord.Y = y;
 		return coord;
+	}
+	friend IntVec2 GetDirection(IntVec2 vector)
+	{
+		if (vector.x == 0 && vector.y == 0)
+			throw std::exception("Is Zero Vector.");
+
+		int x = 0;
+		int y = 0;
+
+		if (abs(vector.x) >= abs(vector.y))
+		{
+			x = vector.x;
+		}
+		if (abs(vector.x) <= abs(vector.y))
+		{
+			x = vector.y;
+		}
+
+		if (vector.x != 0)
+		{
+			vector.x /= abs(vector.x);
+		}
+		if (vector.y != 0)
+		{
+			vector.y /= abs(vector.y);
+		}
+
+		return IntVec2(x, y);
 	}
 };

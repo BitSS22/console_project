@@ -220,7 +220,7 @@ void SceneLoop()
 	}
 
 	// buffer draw
-	for (size_t y = 0; y < console_size.y; ++y)
+	for (int y = 0; y < console_size.y; ++y)
 	{
 		CursorMove(IntVec2(0, y));
 		std::string_view view(console_back_buffer + (console_size.x * y), console_size.x);

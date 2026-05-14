@@ -5,6 +5,7 @@
 #include <limits>
 #include "structs.h"
 #include "Define.h"
+#include "Enemy.h"
 
 inline bool running_process = true;
 inline HANDLE console_handle = NULL;
@@ -13,6 +14,14 @@ inline char* console_back_buffer = nullptr;
 inline std::array<Key, (std::numeric_limits<unsigned char>::max)()> KeyList = {};
 inline Scene current_scene = Scene::ENUM_SIZE;
 
+inline std::array<Enemy, MAX_ENEMY_COUNT> Enemies = {};
+inline std::array<Enemy, MAX_ENEMY_BULLET_COUNT> Enemy_bullets = {};
+inline std::array<Enemy, MAX_PLAYER_BULLET_COUNT> player_bullets = {};
+
 inline constexpr int count_of_second = COUNT_OF_SECOND;
 inline constexpr int target_delta_time = count_of_second / TARGET_FRAME;
-static_assert(count_of_second % TARGET_FRAME == 0);
+static_assert(count_of_second% TARGET_FRAME == 0);
+
+static_assert(MAX_ENEMY_COUNT > 0);
+static_assert(MAX_ENEMY_BULLET_COUNT > 0);
+static_assert(MAX_PLAYER_BULLET_COUNT > 0);

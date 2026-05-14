@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="ConsoleControl.cpp" />
     <ClCompile Include="Ending.cpp" />
+    <ClCompile Include="Pattern.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Time.cpp" />
@@ -139,7 +140,8 @@
     <ClInclude Include="ConsoleDatas.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Ending.h" />
-    <ClInclude Include="EntityAttackPattern.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Pattern.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="LogHelper.h" />
