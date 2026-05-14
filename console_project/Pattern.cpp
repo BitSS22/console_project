@@ -18,7 +18,7 @@ void EnemyMove(Enemy& data, IntVec2 vector)
 	data.direction = GetDirection(vector);
 }
 
-void EnemyAttack(IntVec2 spawnPosition, IntVec2 direction, AttackType attack)
+void EnemyAttack(IntVec2 spawnPosition, IntVec2 direction, char bullet)
 {
 	
 }
