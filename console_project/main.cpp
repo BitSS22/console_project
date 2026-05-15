@@ -73,6 +73,16 @@ bool Init()
 	if (!FileRead(path, LoadInitData))
 		return false;
 
+	path = std::filesystem::current_path() / "entity_datas" / "pattern.txt";
+	bool LoadPatternData(std::ifstream & file);
+	if (!FileRead(path, LoadPatternData))
+		return false;
+
+	path = std::filesystem::current_path() / "entity_datas" / "entity.txt";
+	bool LoadEntityData(std::ifstream & file);
+	if (!FileRead(path, LoadEntityData))
+		return false;
+
 	if (!TitleDataInit())
 	{
 		Log("Title Data Init Fail.\n");
@@ -181,6 +191,91 @@ bool LoadInitData(std::ifstream& file)
 	{
 		Log("Buffer Allocate Fail.\n");
 		return false;
+	}
+
+	return true;
+}
+
+bool LoadPatternData(std::ifstream& file)
+{
+	std::string line;
+
+	while (std::getline(file, line))
+	{
+		if (line.empty())
+			continue;
+
+		Log("read data : ", line, '\n');
+		size_t index = line.find('=');
+
+		if (index == std::string::npos)
+		{
+			Log("Not found '=' format.\n");
+			return false;
+		}
+
+		std::string key = line.substr(0, index);
+		std::string value = line.substr(index + 1);
+		if (value.empty())
+		{
+			Log("Not found Value Data.\n");
+			return false;
+		}
+		if (key.empty())
+		{
+			Log("Not found Key Data.\n");
+			return false;
+		}
+
+		if (pattern_datas.contains(key))
+		{
+			Log("Contains pattern data.\n");
+			return false;
+		}
+		pattern_datas.insert(std::make_pair(key, value));
+	}
+
+	return true;
+}
+
+bool LoadEntityData(std::ifstream& file)
+{
+	//TODO. 만드셈
+	std::string line;
+
+	while (std::getline(file, line))
+	{
+		if (line.empty())
+			continue;
+
+		Log("read data : ", line, '\n');
+		size_t index = line.find('=');
+
+		if (index == std::string::npos)
+		{
+			Log("Not found '=' format.\n");
+			return false;
+		}
+
+		std::string key = line.substr(0, index);
+		std::string value = line.substr(index + 1);
+		if (value.empty())
+		{
+			Log("Not found Value Data.\n");
+			return false;
+		}
+		if (key.empty())
+		{
+			Log("Not found Key Data.\n");
+			return false;
+		}
+
+		if (pattern_datas.contains(key))
+		{
+			Log("Contains pattern data.\n");
+			return false;
+		}
+		pattern_datas.insert(std::make_pair(key, value));
 	}
 
 	return true;

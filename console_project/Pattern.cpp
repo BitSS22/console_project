@@ -42,7 +42,7 @@ void EntityMove(IntVec2& position, IntVec2 entity_direction, Direction move_dire
 
 void EntityTurn(IntVec2& direction, IntVec2Rotate rotate)
 {
-
+	direction = IntVec2::Rotate(direction, rotate);
 }
 
 void SpawnEntity(IntVec2& position, IntVec2 direction, ObjectType object_type, char id, size_t current_pattern_index = 0)

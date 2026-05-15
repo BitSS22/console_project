@@ -83,9 +83,6 @@ enemy가 가능한 행동
 
 대기
 이동
-방향 공격
-ㄴ 직선 공격
-ㄴ 회전 회오리 공격 등등..
 
 // 패턴은 가변길이 2차원배열.
 	// 근데 길이가 처음에 고정이니 최종 길이와 각 패턴의 길이를 기록한다면 1차원으로도 가능할듯
@@ -93,15 +90,17 @@ enemy가 가능한 행동
 	// name:line
 	// W12,M-1-2,
 	// 
-	// W - wait
+	// W- - Wait
 	// operand
 	// int
-	// M - Move
+	// F,B,L,R - Move
 	// operand
-	// direction - FBLR
 	// int
+	// D - Direction
+	// operand
+	// F,B,L,R
 	// S - Spawn
 	// operand
 	// id
-	// D - Death
+	// E - Death
 	// operand

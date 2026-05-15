@@ -14,13 +14,6 @@ enum class ObjectType : char
 	ENUM_SIZE
 };
 
-struct Pattern
-{
-	char* code;
-	char* instruct_index;
-	size_t instruct_count;
-};
-
 struct Entity
 {
 	char id;
@@ -29,7 +22,7 @@ struct Entity
 	IntVec2 position;
 	IntVec2 direction;
 	Pattern* pattern;
-	size_t current_pattern_index;
+	size_t instruct_iterator;
 };
 
 struct EntityData

@@ -10,11 +10,14 @@
 
 inline bool running_process = true;
 inline HANDLE console_handle = NULL;
-inline IntVec2 console_size = { 0, 0 };
+
 inline char* console_back_buffer = nullptr;
+inline IntVec2 console_size = { 0, 0 };
+inline std::unordered_map<std::string, std::string> pattern_datas = {};
+inline std::unordered_map<char, EntityData> entity_datas = {};
+
 inline std::array<Key, (std::numeric_limits<unsigned char>::max)()> KeyList = {};
 inline Scene current_scene = Scene::ENUM_SIZE;
-inline std::unordered_map<char, EntityData> entity_datas;
 
 inline std::array<Entity, MAX_ENEMY_COUNT> Enemies = {};
 inline std::array<Entity, MAX_ENEMY_BULLET_COUNT> Enemy_bullets = {};
