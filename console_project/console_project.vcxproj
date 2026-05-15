@@ -140,7 +140,7 @@
     <ClInclude Include="ConsoleDatas.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Ending.h" />
-    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="Pattern.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="Game.h" />

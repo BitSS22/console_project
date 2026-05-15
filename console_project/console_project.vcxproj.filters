@@ -58,7 +58,7 @@
     <ClInclude Include="structs.h">
       <Filter>Datas</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
+    <ClInclude Include="Entity.h">
       <Filter>Pattern</Filter>
     </ClInclude>
   </ItemGroup>

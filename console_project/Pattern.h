@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Enemy.h"
+#include "Entity.h"
 
-void EnemyWait();
-void EnemyMove(Enemy& data, IntVec2 vector);
+void EntityWait();
+void EntityMove(IntVec2& position, IntVec2& direction, IntVec2 vector);
 void EnemyAttack(Enemy& data, AttackType attack);

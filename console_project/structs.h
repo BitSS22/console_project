@@ -99,3 +99,4 @@ struct IntVec2
 		return IntVec2(x, y);
 	}
 };
+
