@@ -65,9 +65,7 @@ struct IntVec2
 	}
 	operator COORD() const
 	{
-		COORD coord;
-		coord.X = x;
-		coord.Y = y;
+		COORD coord = { x, y };
 		return coord;
 	}
 	friend IntVec2 GetDirection(IntVec2 vector)
