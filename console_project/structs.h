@@ -3,6 +3,8 @@
 #include <Windows.h>
 #include <cmath>
 
+#include "LogHelper.h"
+
 enum class Scene
 {
 	TITLE,
@@ -23,6 +25,22 @@ struct Key
 {
 	unsigned char type;
 	bool press;
+};
+
+enum class IntVec2Rotate
+{
+	C0,
+	C90,
+	C180,
+	C270
+};
+
+enum class Direction
+{
+	FORWARD,
+	RIGHT,
+	BACK,
+	LEFT
 };
 
 struct IntVec2
@@ -68,33 +86,36 @@ struct IntVec2
 		COORD coord = { x, y };
 		return coord;
 	}
-	friend IntVec2 GetDirection(IntVec2 vector)
+	static int Dot(IntVec2 left, IntVec2 right)
 	{
-		if (vector.x == 0 && vector.y == 0)
-			throw std::exception("Is Zero Vector.");
-
-		int x = 0;
-		int y = 0;
-
-		if (abs(vector.x) >= abs(vector.y))
-		{
-			x = vector.x;
-		}
-		if (abs(vector.x) <= abs(vector.y))
-		{
-			x = vector.y;
-		}
-
-		if (vector.x != 0)
-		{
-			vector.x /= abs(vector.x);
-		}
-		if (vector.y != 0)
-		{
-			vector.y /= abs(vector.y);
-		}
-
-		return IntVec2(x, y);
+		return left.x * right.x + left.y * right.y;
 	}
+	static int Cross(IntVec2 left, IntVec2 right)
+	{
+		return left.x * right.y - left.y * right.x;
+	}
+	static IntVec2 Rotate(IntVec2 vector, IntVec2Rotate rotate)
+	{
+		switch (rotate)
+		{
+		case IntVec2Rotate::C0:
+			return vector;
+		case IntVec2Rotate::C90:
+			return { vector.y, -vector.x };
+		case IntVec2Rotate::C180:
+			return { -vector.x, -vector.y };
+		case IntVec2Rotate::C270:
+			return { -vector.y, vector.x };
+		default:
+			Log("IntVec2 rotate in invalid argument.\n");
+			return {};
+		}
+	}
+
+	constexpr static IntVec2 UP() { return { 0, -1 }; }
+	constexpr static IntVec2 LEFT() { return { -1, 0 }; }
+	constexpr static IntVec2 RIGHT() { return { 1, 0 }; }
+	constexpr static IntVec2 DOWN() { return { 0, 1 }; }
+	constexpr static IntVec2 ZERO() { return { 0, 0 }; }
 };
 

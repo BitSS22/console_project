@@ -8,6 +8,7 @@ map_datas
 ㄴstage_info.txt
 ㄴstage_.txt
 entity_datas
+ㄴpattern.txt
 ㄴenties
 
 파일 내용
@@ -24,11 +25,15 @@ stages_info.txt
 stage_num
 스테이지 구성
 
+pattern.txt
+name=
+W3,MF1,
+
 entity_datas
-식별값 (string)
 render_char=
-패턴 데이터
-공격 빈도
+spawn_direction=U
+pattern_name=
+
 
 
 적에게 부여할 값?
@@ -81,3 +86,22 @@ enemy가 가능한 행동
 방향 공격
 ㄴ 직선 공격
 ㄴ 회전 회오리 공격 등등..
+
+// 패턴은 가변길이 2차원배열.
+	// 근데 길이가 처음에 고정이니 최종 길이와 각 패턴의 길이를 기록한다면 1차원으로도 가능할듯
+	// 패턴 정의
+	// name:line
+	// W12,M-1-2,
+	// 
+	// W - wait
+	// operand
+	// int
+	// M - Move
+	// operand
+	// direction - FBLR
+	// int
+	// S - Spawn
+	// operand
+	// id
+	// D - Death
+	// operand
