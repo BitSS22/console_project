@@ -1,1 +1,38 @@
-line=W1,F1,B1,L1,R1,TF,S0,D
+// 작성 방법
+// "패턴 이름"="패턴"
+// 패턴이 끝날 경우 맨 처음으로 가서 다시 시작함.
+// 패턴 끝과 시작 사이에 프레임 종료 기능 없음.
+// 패턴에 W , D 중 하나가 1번 이상 등장해야 함.
+
+// 패턴종류
+
+// W + int
+// 이번 프레임 종료. 숫자만큼 프레임 종료. int는 1 이상 99이하.
+
+// ,
+// W1과 같음
+
+// F, B, L, R + int
+// 각 방향으로 이동. 현재 entity의 direction에 따라
+// Forward, Back, Left, Right 으로 int 만큼 이동.
+// 중간 충돌 검사 없음.
+
+// T + F, B, L, R
+// entity가 보는 방향 기준 각 방향으로 회전.
+
+// K + F, B, L, R
+// entity를 해당 방향을 바라보게 함.
+
+// S + id
+// 다음 프레임 시작 전 entity 생성.
+// 새로 생성된 entity의 direction은 pattern을 실행중인 entity의 direction.
+// pattern data 생성중 entity의 id 유효성을 검사하지 않으므로, 플레이 중 id가 존재하지 않는다면 아무 동작 하지 않음.
+
+// D
+// 이번 프레임 종료시 pattern 실행중인 entity 삭제.
+// pattern 맨 마지막에만 넣을 수 있음.
+
+// ex)
+// test=F1W4,F1W4,F1W4,F1W4,TB,F1W4,F1W4,F1W4,F1W4,D
+
+test=F1W4,F1W4,F1W4,F1W4,TB,F1W4,F1W4,F1W4,F1W4,D

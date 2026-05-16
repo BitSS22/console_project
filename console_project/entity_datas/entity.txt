@@ -1,0 +1,45 @@
+// define
+// 정의 시작
+
+// id=char
+// entuty id. ascii 값 1글자.
+
+// pattern_name=string
+// entity가 가질 pattern.
+
+// object_type=typename
+// 다음 중 하나여야 함.
+// enemy
+// object
+// enemy_bullet
+
+// default_direction=direction
+// entity 기본 방향
+// 다음 중 하나여야 함.
+// U,R,D,L
+// Up, Right, Down, Left
+
+// end
+// 정의 종료
+
+// ex)
+// define
+// id=5
+// pattern_name=test
+// object_type=enemy
+// default_direction=U
+// end
+
+define
+id=G
+pattern_name=test
+object_type=enemy
+default_direction=D
+end
+
+define
+id=3
+pattern_name=test
+object_type=enem
+default_direction=L
+end

@@ -9,12 +9,12 @@
 #include "LogHelper.h"
 #include "File.h"
 
-char* title_data = nullptr;
+char* title_bg = nullptr;
 
 bool LoadTitleData(std::ifstream& file)
 {
-	title_data = static_cast<char*>(malloc(console_size.x * console_size.y));
-	if (!title_data)
+	title_bg = static_cast<char*>(malloc(console_size.x * console_size.y));
+	if (!title_bg)
 	{
 		Log("Buffer Allocate Fail.\n");
 		return false;
@@ -42,21 +42,27 @@ bool LoadTitleData(std::ifstream& file)
 		if (line.length() < console_size.x)
 			line.resize(console_size.x, ' ');
 
-		Log("line ", lineCount, ":", line, ": length ", prevLength, '\n');
+		Log("line ");
+		if (lineCount < 10)
+			Log('0');
+		Log(lineCount, ":", line, ": length ", prevLength, '\n');
 
-		memcpy(title_data + (lineCount * console_size.x), line.c_str(), line.size());
+		memcpy(title_bg + (lineCount * console_size.x), line.c_str(), line.size());
 
 		++lineCount;
 	}
 
 	if (lineCount < console_size.y)
 	{
-		memset(title_data + (lineCount * console_size.x), ' ', (console_size.y - lineCount) * console_size.x);
+		memset(title_bg + (lineCount * console_size.x), ' ', (console_size.y - lineCount) * console_size.x);
 		line = {};
 		line.resize(console_size.x, ' ');
 		while (lineCount < console_size.y)
 		{
-			Log("line ", lineCount, ":", line, ": length 0\n");
+			Log("line ");
+			if (lineCount < 10)
+				Log('0');
+			Log(lineCount, ":", line, ": length 0\n");
 			++lineCount;
 		}
 	}
@@ -83,11 +89,11 @@ void TitleUpdate()
 
 void TitleRender()
 {
-	memcpy(console_back_buffer, title_data, console_size.x * console_size.y);
+	memcpy(console_back_buffer, title_bg, console_size.x * console_size.y);
 }
 
 void TitleDataRelease()
 {
-	if (title_data != nullptr)
-		free(title_data);
+	if (title_bg != nullptr)
+		free(title_bg);
 }

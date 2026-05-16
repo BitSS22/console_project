@@ -121,6 +121,8 @@ bool Init()
 	if (b1 == FALSE || b2 == FALSE)
 	{
 		Log("콘솔 버퍼 사이즈 조절 실패했는데 이것까지 고치긴 귀찮으니까 사이즈를 적절하게 잘 바꿔서 하셈.\n");
+		Log("솔직히 console 화면이 호스팅 되는거라 내가 바꾸던 안바꾸던 전혀 차이가 없는 느낌이긴 한데\n");
+		Log("일단 정석은 바꾸는게 맞는 것 같으니까 코드는 실행되도록 냅둠..\n");
 	}
 
 	current_scene = Scene::TITLE;
@@ -155,6 +157,10 @@ bool LoadInitData(std::ifstream& file)
 
 	while (std::getline(file, line))
 	{
+		size_t i = line.find("//");
+		if (i != std::string::npos)
+			line.resize(i);
+
 		if (line.empty())
 			continue;
 
@@ -178,9 +184,9 @@ bool LoadInitData(std::ifstream& file)
 		if (key == "console_size_width")
 		{
 			int i = std::stoi(value);
-			if (i < 5)
+			if (i < 5 || i >= 100)
 			{
-				Log("console_size_width need greater then 4.\n");
+				Log("console_size_width need greater then 4 and less then 100.\n");
 				return false;
 			}
 
@@ -189,9 +195,9 @@ bool LoadInitData(std::ifstream& file)
 		else if (key == "console_size_height")
 		{
 			int i = std::stoi(value);
-			if (i < 5)
+			if (i < 5 || i >= 100)
 			{
-				Log("console_size_height need greater then 4.\n");
+				Log("console_size_height need greater then 4 and less then 100.\n");
 				return false;
 			}
 
@@ -220,6 +226,10 @@ bool LoadPatternData(std::ifstream& file)
 
 	while (std::getline(file, line))
 	{
+		size_t i = line.find("//");
+		if (i != std::string::npos)
+			line.resize(i);
+
 		if (line.empty())
 			continue;
 
@@ -253,6 +263,7 @@ bool LoadPatternData(std::ifstream& file)
 
 		// 해석
 		std::string code = {};
+		bool infinity = true;
 		code.reserve(value.size());
 
 		for (size_t i = 0; i < value.size(); )
@@ -293,6 +304,7 @@ bool LoadPatternData(std::ifstream& file)
 					}
 				}
 
+				infinity = false;
 				i += end - start + 1;
 			}
 			else if (ch == 'T' || ch == 'K')
@@ -337,6 +349,8 @@ bool LoadPatternData(std::ifstream& file)
 					Log("D can only exist at the end of the pattern. index", i, ":", ch, "\n");
 					return false;
 				}
+
+				infinity = false;
 			}
 			else if (ch == ',')
 			{
@@ -350,6 +364,13 @@ bool LoadPatternData(std::ifstream& file)
 			}
 		}
 
+		if (infinity)
+		{
+			Log("Pattern Generate fail. Is infinity loop.\n");
+			return false;
+		}
+
+		Log("Make pattern. name:", key, "=", code, "\n");
 		pattern_datas.insert(std::make_pair(key, std::move(code)));
 	}
 
@@ -361,17 +382,27 @@ bool LoadEntityData(std::ifstream& file)
 	std::string line;
 	bool is_make = false;
 
-	char id;
-	EntityData entity_data;
+	char id = {};
+	EntityData entity_data = {};
 
 	while (std::getline(file, line))
 	{
+		size_t i = line.find("//");
+		if (i != std::string::npos)
+			line.resize(i);
+
 		if (line.empty())
 			continue;
 
 		Log("read data : ", line, '\n');
 		if (line == "define")
 		{
+			if (is_make)
+			{
+				Log("define is twice.\n");
+				return false;
+			}
+
 			Log("define entity start..\n");
 			id = 0;
 			entity_data.object_type = ObjectType::ENUM_SIZE;
@@ -382,6 +413,12 @@ bool LoadEntityData(std::ifstream& file)
 		}
 		if (line == "end")
 		{
+			if (!is_make)
+			{
+				Log("end is twice or not declare define.\n");
+				return false;
+			}
+
 			Log("define entity end. make entity name of ", id, ".\n");
 			if (id == 0
 			|| entity_data.object_type == ObjectType::ENUM_SIZE
@@ -396,7 +433,7 @@ bool LoadEntityData(std::ifstream& file)
 				return false;
 			}
 
-			entity_datas.insert(std::make_pair(id, std::move(entity_data)));
+			entity_datas.insert(std::make_pair(id, entity_data));
 			is_make = false;
 			continue;
 		}
@@ -439,26 +476,18 @@ bool LoadEntityData(std::ifstream& file)
 		}
 		else if (key == "object_type")
 		{
-			if (value == "player")
-				entity_data.object_type = ObjectType::PLAYER;
 			if (value == "enemy")
 				entity_data.object_type = ObjectType::ENEMY;
-			if (value == "object")
+			else if (value == "object")
 				entity_data.object_type = ObjectType::OBJECT;
-			if (value == "player_bullet")
-				entity_data.object_type = ObjectType::PLAYER_BULLET;
-			if (value == "enemy_bullet")
+			else if (value == "enemy_bullet")
 				entity_data.object_type = ObjectType::ENEMY_BULLET;
 			else
 			{
-				Log("The type must be defined as one of the following.\n)");
-				Log("player\n)");
-				Log("enemy\n)");
-				Log("object\n)");
-				Log("player_bullet\n)");
-				Log("enemy_bullet\n)");
-
-				Log("Type Count:", static_cast<int>(ObjectType::ENUM_SIZE), "\n");
+				Log("The type must be defined as one of the following.\n");
+				Log("enemy\n");
+				Log("object\n");
+				Log("enemy_bullet\n");
 				return false;
 			}
 		}
@@ -490,8 +519,8 @@ bool LoadEntityData(std::ifstream& file)
 				entity_data.default_direction = IntVec2::LEFT();
 			else
 			{
-				Log("The type must be defined as one of the following.\n)");
-				Log("(U)p (R)ight (D)own (L)eft)\n");
+				Log("The type must be defined as one of the following.\n");
+				Log("(U)p (R)ight (D)own (L)eft\n");
 				return false;
 			}
 		}

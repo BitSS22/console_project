@@ -16,7 +16,7 @@ void EntityMove(IntVec2& position, IntVec2 entity_direction, Direction move_dire
 		return;
 	}
 
-	IntVec2Rotate rotate;
+	IntVec2Rotate rotate = IntVec2Rotate::C0;
 
 	switch (move_direction)
 	{

@@ -1,2 +1,8 @@
-console_size_width=100
+// 값 범위 5~99
+
+// ex)
+// console_size_width=5
+// console_size_height=20
+
+console_size_width=90
 console_size_height=50
