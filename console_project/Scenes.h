@@ -2,4 +2,5 @@
 
 #include "Title.h"
 #include "Game.h"
-#include "Ending.h"
+#include "Victory.h"
+#include "Defeat.h"

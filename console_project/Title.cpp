@@ -11,8 +11,6 @@
 
 char* title_bg = nullptr;
 
-
-
 bool TitleDataInit()
 {
 	std::filesystem::path path;
@@ -28,6 +26,16 @@ void TitleUpdate()
 	if (IsPressKey(VK_RETURN))
 	{
 		current_scene = Scene::GAME;
+	}
+
+	if (IsPressKey('O'))
+	{
+		current_scene = Scene::VICTORY;
+	}
+
+	if (IsPressKey('P'))
+	{
+		current_scene = Scene::DEFEAT;
 	}
 }
 

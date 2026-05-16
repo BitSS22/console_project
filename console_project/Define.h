@@ -3,7 +3,7 @@
 #define LOG
 #define CONSOLE_LOG
 
-#define MAX_ENTITY_COUNT 100
+#define MAX_ENTITY_COUNT 200
 #define MAX_PLAYER_BULLET_COUNT 4
 
 #define COUNT_OF_SECOND 1000

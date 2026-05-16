@@ -8,7 +8,7 @@
     <ClCompile Include="Game.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Ending.cpp">
+    <ClCompile Include="Victory.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Time.cpp">
@@ -21,6 +21,9 @@
       <Filter>Pattern</Filter>
     </ClCompile>
     <ClCompile Include="File.cpp" />
+    <ClCompile Include="Defeat.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Title.h">
@@ -32,7 +35,7 @@
     <ClInclude Include="Game.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Ending.h">
+    <ClInclude Include="Victory.h">
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Pattern.h">
@@ -61,6 +64,9 @@
     </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Pattern</Filter>
+    </ClInclude>
+    <ClInclude Include="Defeat.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,8 @@ enum class Scene
 {
 	TITLE,
 	GAME,
-	ENDING,
+	VICTORY,
+	DEFEAT,
 
 	ENUM_SIZE
 };

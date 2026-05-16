@@ -95,9 +95,15 @@ bool Init()
 		return false;
 	}
 
-	if (!EndingDataInit())
+	if (!VictoryDataInit())
 	{
-		Log("Ending Data Init Fail.\n");
+		Log("Victory Data Init Fail.\n");
+		return false;
+	}
+
+	if (!DefeatDataInit())
+	{
+		Log("Defeat Data Init Fail.\n");
 		return false;
 	}
 
@@ -146,7 +152,8 @@ void Release()
 
 	TitleDataRelease();
 	GameDataRelease();
-	EndingDataRelease();
+	VictoryDataRelease();
+	DefeatDataRelease();
 
 	timeEndPeriod(1);
 }
@@ -557,9 +564,13 @@ void SceneLoop()
 		GameUpdate();
 		GameRender();
 		break;
-	case Scene::ENDING:
-		EndingUpdate();
-		EndingRender();
+	case Scene::VICTORY:
+		VictoryUpdate();
+		VictoryRender();
+		break;
+	case Scene::DEFEAT:
+		DefeatUpdate();
+		DefeatRender();
 		break;
 	default:
 		Log("Unknown scene. current_scene : ", static_cast<int>(current_scene), '\n');

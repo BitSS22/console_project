@@ -128,7 +128,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ConsoleControl.cpp" />
-    <ClCompile Include="Ending.cpp" />
+    <ClCompile Include="Defeat.cpp" />
+    <ClCompile Include="Victory.cpp" />
     <ClCompile Include="File.cpp" />
     <ClCompile Include="Pattern.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -139,8 +140,9 @@
   <ItemGroup>
     <ClInclude Include="ConsoleControl.h" />
     <ClInclude Include="ConsoleDatas.h" />
+    <ClInclude Include="Defeat.h" />
     <ClInclude Include="Define.h" />
-    <ClInclude Include="Ending.h" />
+    <ClInclude Include="Victory.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Pattern.h" />
     <ClInclude Include="File.h" />
