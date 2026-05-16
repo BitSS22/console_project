@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "structs.h"
-#include <functional>
+#include <string>
 
 enum class ObjectType : char
 {
@@ -21,12 +21,13 @@ struct Entity
 	ObjectType object_type;
 	IntVec2 position;
 	IntVec2 direction;
-	Pattern* pattern;
+	std::string_view pattern;
 	size_t instruct_iterator;
 };
 
 struct EntityData
 {
-	IntVec2 init_direction;
-	Pattern* pattern;
+	ObjectType object_type;
+	IntVec2 default_direction;
+	std::string_view pattern;
 };

@@ -11,9 +11,9 @@
 
 char* title_data = nullptr;
 
-bool Work(std::ifstream& file)
+bool LoadTitleData(std::ifstream& file)
 {
-	title_data = static_cast<char*>(malloc(sizeof(console_size.x * console_size.y)));
+	title_data = static_cast<char*>(malloc(console_size.x * console_size.y));
 	if (!title_data)
 	{
 		Log("Buffer Allocate Fail.\n");
@@ -52,7 +52,8 @@ bool Work(std::ifstream& file)
 	if (lineCount < console_size.y)
 	{
 		memset(title_data + (lineCount * console_size.x), ' ', (console_size.y - lineCount) * console_size.x);
-		line = std::string(console_size.x, ' ');
+		line = {};
+		line.resize(console_size.x, ' ');
 		while (lineCount < console_size.y)
 		{
 			Log("line ", lineCount, ":", line, ": length 0\n");
@@ -67,7 +68,7 @@ bool TitleDataInit()
 {
 	std::filesystem::path path;
 	path = std::filesystem::current_path() / "map_datas" / "title.txt";
-	if (!FileRead(path, Work))
+	if (!FileRead(path, LoadTitleData))
 		return false;
 	return true;
 }

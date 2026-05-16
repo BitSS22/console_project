@@ -83,7 +83,7 @@ struct IntVec2
 	}
 	operator COORD() const
 	{
-		COORD coord = { x, y };
+		COORD coord = { static_cast<short>(x), static_cast<short>(y) };
 		return coord;
 	}
 	static int Dot(IntVec2 left, IntVec2 right)
