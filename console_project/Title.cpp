@@ -11,70 +11,14 @@
 
 char* title_bg = nullptr;
 
-bool LoadTitleData(std::ifstream& file)
-{
-	title_bg = static_cast<char*>(malloc(console_size.x * console_size.y));
-	if (!title_bg)
-	{
-		Log("Buffer Allocate Fail.\n");
-		return false;
-	}
 
-	std::string line;
-
-	size_t lineCount = 0;
-
-	while (std::getline(file, line))
-	{
-		if (line.length() > console_size.x)
-		{
-			Log("The width is too large.\nline : ", lineCount + 1, ", length : ", line.length(), '\n');
-			return false;
-		}
-
-		if (lineCount >= console_size.y)
-		{
-			Log("The height is too high.\nline : ", lineCount + 1, ", length : ", line.length(), '\n');
-			return false;
-		}
-
-		size_t prevLength = line.length();
-		if (line.length() < console_size.x)
-			line.resize(console_size.x, ' ');
-
-		Log("line ");
-		if (lineCount < 10)
-			Log('0');
-		Log(lineCount, ":", line, ": length ", prevLength, '\n');
-
-		memcpy(title_bg + (lineCount * console_size.x), line.c_str(), line.size());
-
-		++lineCount;
-	}
-
-	if (lineCount < console_size.y)
-	{
-		memset(title_bg + (lineCount * console_size.x), ' ', (console_size.y - lineCount) * console_size.x);
-		line = {};
-		line.resize(console_size.x, ' ');
-		while (lineCount < console_size.y)
-		{
-			Log("line ");
-			if (lineCount < 10)
-				Log('0');
-			Log(lineCount, ":", line, ": length 0\n");
-			++lineCount;
-		}
-	}
-
-	return true;
-}
 
 bool TitleDataInit()
 {
 	std::filesystem::path path;
-	path = std::filesystem::current_path() / "map_datas" / "title.txt";
-	if (!FileRead(path, LoadTitleData))
+	path = std::filesystem::current_path() / "map_datas" / "title_bg.txt";
+
+	if (!FileRead(path, LoadBGData, title_bg))
 		return false;
 	return true;
 }

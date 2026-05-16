@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="ConsoleControl.cpp" />
     <ClCompile Include="Ending.cpp" />
+    <ClCompile Include="File.cpp" />
     <ClCompile Include="Pattern.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />

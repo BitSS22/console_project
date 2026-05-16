@@ -1,0 +1,8 @@
+// 값 범위 5~300
+
+// ex)
+// console_size_width=5
+// console_size_height=20
+
+console_size_width=180
+console_size_height=60

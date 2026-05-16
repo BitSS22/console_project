@@ -20,6 +20,7 @@
     <ClCompile Include="Pattern.cpp">
       <Filter>Pattern</Filter>
     </ClCompile>
+    <ClCompile Include="File.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Title.h">

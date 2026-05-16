@@ -31,15 +31,15 @@
 // end
 
 define
-id=G
+id=E
 pattern_name=test
 object_type=enemy
 default_direction=D
 end
 
 define
-id=3
+id=F
 pattern_name=test
-object_type=enem
+object_type=enemy
 default_direction=L
 end

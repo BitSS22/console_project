@@ -68,7 +68,7 @@ bool Init()
 	// data load
 	std::filesystem::path path;
 
-	path = std::filesystem::current_path() / "init_data.txt";
+	path = std::filesystem::current_path() / "init_datas" / "init_data.txt";
 	bool LoadInitData(std::ifstream & file);
 	if (!FileRead(path, LoadInitData))
 		return false;
@@ -184,9 +184,9 @@ bool LoadInitData(std::ifstream& file)
 		if (key == "console_size_width")
 		{
 			int i = std::stoi(value);
-			if (i < 5 || i >= 100)
+			if (i < 3 || i >= 300)
 			{
-				Log("console_size_width need greater then 4 and less then 100.\n");
+				Log("console_size_width need greater then 2 and less then 301.\n");
 				return false;
 			}
 
@@ -195,9 +195,9 @@ bool LoadInitData(std::ifstream& file)
 		else if (key == "console_size_height")
 		{
 			int i = std::stoi(value);
-			if (i < 5 || i >= 100)
+			if (i < 3 || i >= 300)
 			{
-				Log("console_size_height need greater then 4 and less then 100.\n");
+				Log("console_size_height need greater then 2 and less then 301.\n");
 				return false;
 			}
 

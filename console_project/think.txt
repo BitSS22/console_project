@@ -1,15 +1,16 @@
 파일 구조
 
 실행파일
-init_data.txt
+init_datas
+ㄴinit_data.txt
 map_datas
-ㄴtitle.txt
+ㄴtitle_bg.txt
 ㄴEnding.txt
-ㄴstage_info.txt
-ㄴstage_.txt
+ㄴstage
+  ㄴ
 entity_datas
 ㄴpattern.txt
-ㄴenties
+ㄴentity.txt
 
 파일 내용
 init_data.txt
