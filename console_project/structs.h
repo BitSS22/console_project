@@ -21,7 +21,7 @@ struct Key
 	bool press;
 };
 
-enum class IntVec2Rotate
+enum class IntVec2Rotate : char
 {
 	C0,
 	C90,
@@ -29,7 +29,7 @@ enum class IntVec2Rotate
 	C270
 };
 
-enum class Direction
+enum class Direction : char
 {
 	FORWARD,
 	RIGHT,

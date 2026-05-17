@@ -14,6 +14,14 @@ void CursorMove(IntVec2 postion)
 	SetConsoleCursorPosition(console_handle, postion);
 }
 
+void CursorMove(size_t index)
+{
+	IntVec2 position;
+	position.x = static_cast<int>(index) % console_size.x;
+	position.y = static_cast<int>(index) / console_size.x;
+	CursorMove(position);
+}
+
 inline size_t GetIdx(IntVec2 position)
 {
 	return GetIdx(position.x, position.y);

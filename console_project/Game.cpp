@@ -132,6 +132,7 @@ void StateInGame()
 	// 여기서 생성, 파괴는 이벤트 큐에 삽입 후 이번 프레임 종료 후 처리
 	// 모든 위치 값과 패턴 처리
 
+	
 	// 조작 처리
 	if (IsPressKey('W'))
 	{
@@ -209,11 +210,98 @@ void StateInGame()
 
 		std::string_view pattern = entity.pattern;
 		size_t& index = entity.instruct_iterator;
+		index %= pattern.size();
 
 		while (true)
 		{
 			char instruct = pattern[index];
 
+			if (instruct == 'W')
+			{
+				EntityWait();
+				++index;
+				break;
+			}
+			else if (instruct == 'F')
+			{
+				EntityMove(entity.position, entity.direction, Direction::FORWARD, pattern[index + 1]);
+				index += 2;
+			}
+			else if (instruct == 'B')
+			{
+				EntityMove(entity.position, entity.direction, Direction::BACK, pattern[index + 1]);
+				index += 2;
+			}
+			else if (instruct == 'L')
+			{
+				EntityMove(entity.position, entity.direction, Direction::LEFT, pattern[index + 1]);
+				index += 2;
+			}
+			else if (instruct == 'R')
+			{
+				EntityMove(entity.position, entity.direction, Direction::RIGHT, pattern[index + 1]);
+				index += 2;
+			}
+			else if (instruct == 'T')
+			{
+				if (pattern[index + 1] == 'F')
+				{
+					EntityTurn(entity.direction, IntVec2Rotate::C0);
+					index += 2;
+				}
+				else if (pattern[index + 1] == 'B')
+				{
+					EntityTurn(entity.direction, IntVec2Rotate::C180);
+					index += 2;
+				}
+				else if (pattern[index + 1] == 'L')
+				{
+					EntityTurn(entity.direction, IntVec2Rotate::C270);
+					index += 2;
+				}
+				else if (pattern[index + 1] == 'R')
+				{
+					EntityTurn(entity.direction, IntVec2Rotate::C90);
+					index += 2;
+				}
+			}
+			else if (instruct == 'K')
+			{
+				if (pattern[index + 1] == 'F')
+				{
+					EntityLook(entity.direction, Direction::FORWARD);
+					index += 2;
+				}
+				else if (pattern[index + 1] == 'B')
+				{
+					EntityLook(entity.direction, Direction::BACK);
+					index += 2;
+				}
+				else if (pattern[index + 1] == 'L')
+				{
+					EntityLook(entity.direction, Direction::LEFT);
+					index += 2;
+				}
+				else if (pattern[index + 1] == 'R')
+				{
+					EntityLook(entity.direction, Direction::RIGHT);
+					index += 2;
+				}
+			}
+			else if (instruct == 'S')
+			{
+				SpawnEntity(entity.position, entity.direction, pattern[index + 1]);
+				index += 2;
+			}
+			else if (instruct == 'D')
+			{
+				destroy_event.push(i);
+				break;
+			}
+			else
+			{
+				Log("Invalid Instruct.\n");
+			}
 		}
 	}
 }
@@ -305,7 +393,19 @@ void StateEntitiesLifeManagement()
 		spawn_event.pop();
 	}
 
-	game_state = State::IN_GAME;
+	for (size_t i = 0; i < entities.size(); ++i)
+	{
+		if (entities[i].object_type != ObjectType::ENEMY)
+			continue;
+
+		if (entities[i].enable)
+		{
+			game_state = State::IN_GAME;
+			return;
+		}
+	}
+
+	game_state = State::CLEAR;
 }
 
 void StateClear()
@@ -326,7 +426,6 @@ void StateClear()
 	{
 		game_state = State::STAGE_READY;
 	}
-
 }
 
 void StateDefeat()
@@ -441,6 +540,27 @@ void GameRender()
 
 	// 렌더에서 할 일
 	// entities 돌면서 맞는 위치에 대해 id 값 쓰기
+
+	size_t index = GetIdx(player.position);
+	console_back_buffer[index] = '+';
+
+	for (size_t i = 0; i < entities.size(); ++i)
+	{
+		if (!entities[i].enable)
+			continue;
+
+		index = GetIdx(entities[i].position);
+		index = entities[i].id;
+	}
+
+	for (size_t i = 0; i < player_bullets.size(); ++i)
+	{
+		if (!player_bullets[i].enable)
+			continue;
+
+		index = GetIdx(player_bullets[i].position);
+		index = 'O';
+	}
 }
 
 void GameDataRelease()

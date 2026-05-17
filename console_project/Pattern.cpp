@@ -45,11 +45,49 @@ void EntityTurn(IntVec2& direction, IntVec2Rotate rotate)
 	direction = IntVec2::Rotate(direction, rotate);
 }
 
-void SpawnEntity(IntVec2& position, IntVec2 direction, char id)
+void EntityLook(IntVec2& direction, Direction look_at)
+{
+	switch (look_at)
+	{
+	case Direction::FORWARD:
+		direction = IntVec2::UP();
+		break;
+	case Direction::RIGHT:
+		direction = IntVec2::RIGHT();
+		break;
+	case Direction::BACK:
+		direction = IntVec2::DOWN();
+		break;
+	case Direction::LEFT:
+		direction = IntVec2::LEFT();
+		break;
+	}
+}
+
+void SpawnEntity(IntVec2 position, IntVec2 direction, char id)
 {
 	// 설계
 
 	// entity에 대한 데이터 작성 후 이벤트 큐에 넣고 이 함수는 종료
+
+	extern std::queue<Entity> spawn_event;
+
+	auto iter = entity_datas.find(id);
+	if (iter == entity_datas.end())
+		return;
+
+	const EntityData& entity_data = iter->second;
+	
+	Entity entity = {};
+	entity.id = id;
+	entity.enable = true;
+	entity.object_type = entity_data.object_type;
+	entity.position = position;
+	entity.direction = direction;
+	entity.pattern = entity_data.pattern;
+	entity.instruct_iterator = 0;
+
+	spawn_event.push(entity);
 
 
 	// 이 함수 내에서 적절한 위치의 index를 찾을 것인가?
