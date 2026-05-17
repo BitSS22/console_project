@@ -62,7 +62,10 @@ bool Init()
 	for (size_t i = 0; i < KeyList.size(); ++i)
 	{
 		KeyList[i].type = static_cast<unsigned char>(i);
+		KeyList[i].down = false;
 		KeyList[i].press = false;
+		KeyList[i].up = false;
+		KeyList[i].none = true;
 	}
 
 	// data load
@@ -545,7 +548,42 @@ void KeyCheck()
 {
 	for (size_t i = 0; i < KeyList.size(); ++i)
 	{
-		KeyList[i].press = GetAsyncKeyState(static_cast<int>(KeyList[i].type)) & 0x8001;
+		Key& key = KeyList[i];
+
+		if (GetAsyncKeyState(key.type) & 0x8001) // 이번 프레임 키가 눌림
+		{
+			if (key.down == true) // 이전 프레임 키가 눌림
+			{
+				key.down = false;
+				key.press = true;
+				key.up = false;
+				key.none = false;
+			}
+			else if (key.none == true)  // 이전 프레임 키가 안 눌림
+			{
+				key.down = true;
+				key.press = true;
+				key.up = false;
+				key.none = false;
+			}
+		}
+		else  // 이번 프레임 키가 안 눌림
+		{
+			if (key.press == true) // 이전 프레임 키가 눌림
+			{
+				key.down = false;
+				key.press = false;
+				key.up = true;
+				key.none = true;
+			}
+			else if (key.up == true)  // 이전 프레임 키가 안 눌림
+			{
+				key.down = false;
+				key.press = false;
+				key.up = false;
+				key.none = true;
+			}
+		}
 	}
 }
 

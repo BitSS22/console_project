@@ -38,8 +38,8 @@ default_direction=D
 end
 
 define
-id=F
-pattern_name=test
+id=T
+pattern_name=clock_wise_shoot
 object_type=enemy
 default_direction=L
 end

@@ -23,17 +23,17 @@ bool TitleDataInit()
 
 void TitleUpdate()
 {
-	if (IsPressKey(VK_RETURN))
+	if (IsKey(VK_RETURN, KeyState::DOWN))
 	{
 		current_scene = Scene::GAME;
 	}
 
-	if (IsPressKey('O'))
+	if (IsKey('O', KeyState::DOWN))
 	{
 		current_scene = Scene::VICTORY;
 	}
 
-	if (IsPressKey('P'))
+	if (IsKey('P', KeyState::DOWN))
 	{
 		current_scene = Scene::DEFEAT;
 	}

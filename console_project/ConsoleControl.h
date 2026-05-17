@@ -1,7 +1,7 @@
 #pragma once
 #include "structs.h"
 
-bool IsPressKey(unsigned char key);
+bool IsKey(unsigned char key, KeyState state);
 
 void CursorMove(IntVec2 postion);
 void CursorMove(size_t index);

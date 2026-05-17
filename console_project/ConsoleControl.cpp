@@ -3,10 +3,24 @@
 #include <string>
 #include <algorithm>
 #include "ConsoleDatas.h"
+#include <exception>
 
-bool IsPressKey(unsigned char key)
+bool IsKey(unsigned char key, KeyState state)
 {
-	return KeyList[key].press;
+	switch (state)
+	{
+	case KeyState::DOWN:
+		return KeyList[key].down;
+	case KeyState::PRESS:
+		return KeyList[key].press;
+	case KeyState::UP:
+		return KeyList[key].up;
+	case KeyState::NONE:
+		return KeyList[key].none;
+	default:
+		throw std::exception();
+		break;
+	}
 }
 
 void CursorMove(IntVec2 postion)

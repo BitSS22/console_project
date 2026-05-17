@@ -135,19 +135,19 @@ void StateInGame()
 
 	
 	// 조작 처리
-	if (IsPressKey('W'))
+	if (IsKey('W', KeyState::PRESS))
 	{
 		player.position.y += -1;
 	}
-	if (IsPressKey('A'))
+	if (IsKey('A', KeyState::PRESS))
 	{
 		player.position.x += -1;
 	}
-	if (IsPressKey('S'))
+	if (IsKey('S', KeyState::PRESS))
 	{
 		player.position.y += 1;
 	}
-	if (IsPressKey('D'))
+	if (IsKey('D', KeyState::PRESS))
 	{
 		player.position.x += 1;
 	}
@@ -179,19 +179,19 @@ void StateInGame()
 			player_bullets[index].direction = direction;
 		};
 
-	if (IsPressKey(VK_UP))
+	if (IsKey(VK_UP, KeyState::DOWN))
 	{
 		create_bullet_lambda(IntVec2::UP());
 	}
-	if (IsPressKey(VK_LEFT))
+	if (IsKey(VK_LEFT, KeyState::DOWN))
 	{
 		create_bullet_lambda(IntVec2::LEFT());
 	}
-	if (IsPressKey(VK_DOWN))
+	if (IsKey(VK_DOWN, KeyState::DOWN))
 	{
 		create_bullet_lambda(IntVec2::DOWN());
 	}
-	if (IsPressKey(VK_RIGHT))
+	if (IsKey(VK_RIGHT, KeyState::DOWN))
 	{
 		create_bullet_lambda(IntVec2::RIGHT());
 	}
@@ -347,9 +347,13 @@ void StateCollision()
 
 			if (player_bullets[i].position == entities[j].position)
 			{
-				player_bullets[i].enable = false;
-				destroy_event.push(j);
-				break;
+				if (entities[j].object_type == ObjectType::ENEMY
+				|| entities[j].object_type == ObjectType::OBJECT)
+				{
+					player_bullets[i].enable = false;
+					destroy_event.push(j);
+					break;
+				}
 			}
 		}
 	}
@@ -540,21 +544,6 @@ void GameUpdate()
 
 	// entites 돌면서 
 
-
-
-
-
-
-
-
-
-
-
-	// DEBUG
-	if (IsPressKey('0'))
-	{
-		current_scene = Scene::TITLE;
-	}
 }
 
 void GameRender()
@@ -574,7 +563,7 @@ void GameRender()
 	// entities 돌면서 맞는 위치에 대해 id 값 쓰기
 
 	size_t index = GetIdx(player.position);
-	console_back_buffer[index] = '+';
+	console_back_buffer[index] = '@';
 
 	for (size_t i = 0; i < entities.size(); ++i)
 	{

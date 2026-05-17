@@ -37,3 +37,4 @@
 
 line=F1,
 test=F1W4,F1W4,F1W4,F1W4,TB,F1W4,F1W4,F1W4,F1W4,SB,
+clock_wise_shoot=TRF1,SBW9,

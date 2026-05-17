@@ -1,6 +1,6 @@
-player_init_position=2,2
+player_init_position=0,0
 
-id=F
-2,1
-4,3
-6,5
+id=T
+20,20
+30,30
+40,40

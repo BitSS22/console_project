@@ -15,10 +15,21 @@ enum class Scene
 	ENUM_SIZE
 };
 
+enum class KeyState : char
+{
+	DOWN,
+	PRESS,
+	UP,
+	NONE
+};
+
 struct Key
 {
 	unsigned char type;
+	bool down;
 	bool press;
+	bool up;
+	bool none;
 };
 
 enum class IntVec2Rotate : char

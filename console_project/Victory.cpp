@@ -23,7 +23,7 @@ bool VictoryDataInit()
 
 void VictoryUpdate()
 {
-	if (IsPressKey(VK_ESCAPE))
+	if (IsKey(VK_ESCAPE, KeyState::DOWN))
 	{
 		current_scene = Scene::TITLE;
 	}
