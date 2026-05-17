@@ -4,6 +4,7 @@
 #include <array>
 #include <limits>
 #include <unordered_map>
+#include <queue>
 #include "structs.h"
 #include "Define.h"
 #include "Entity.h"
@@ -16,7 +17,7 @@ inline IntVec2 console_size = { 0, 0 };
 inline std::unordered_map<std::string, const std::string> pattern_datas = {};
 inline std::unordered_map<char, const EntityData> entity_datas = {};
 
-inline std::array<Key, (std::numeric_limits<unsigned char>::max)()> KeyList = {};
+inline std::array<Key, (std::numeric_limits<unsigned char>::max)() + 1> KeyList = {};
 inline Scene current_scene = Scene::ENUM_SIZE;
 
 inline std::array<Entity, MAX_ENTITY_COUNT> entities = {};

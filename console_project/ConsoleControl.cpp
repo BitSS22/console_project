@@ -3,7 +3,7 @@
 #include <string>
 #include "ConsoleDatas.h"
 
-bool IsPressKey(int key)
+bool IsPressKey(unsigned char key)
 {
 	return KeyList[key].press;
 }

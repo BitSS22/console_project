@@ -1,0 +1,13 @@
+// 작성된 순서대로 스테이지 진입
+// ex)
+// stage_01.txt
+// stage_02.txt
+// stage_03.txt
+// back ground 필요시 같은 이름 뒤 _bg txt 작성
+// ex)
+// stage_01_bg.txt
+// stage_02_bg.txt
+// stage_03_bg.txt
+
+stage_01.txt
+stage_02.txt

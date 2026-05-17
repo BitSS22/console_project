@@ -1,7 +1,7 @@
 #pragma once
 #include "structs.h"
 
-bool IsPressKey(int key);
+bool IsPressKey(unsigned char key);
 
 void CursorMove(IntVec2 postion);
 inline size_t GetIdx(IntVec2 position);

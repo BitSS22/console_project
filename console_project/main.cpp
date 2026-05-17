@@ -249,8 +249,8 @@ bool LoadPatternData(std::ifstream& file)
 			return false;
 		}
 
-		std::string_view key(line.data(), line.data() + index);
-		std::string_view value(line.data() + index + 1, line.data() + line.size());
+		std::string key(line.data(), index);
+		std::string value(line.data() + index + 1, line.size() - index - 1);
 		if (value.empty())
 		{
 			Log("Not found Value Data.\n");
@@ -262,7 +262,7 @@ bool LoadPatternData(std::ifstream& file)
 			return false;
 		}
 
-		if (pattern_datas.contains(key.data()))
+		if (pattern_datas.contains(key))
 		{
 			Log("Contains pattern data.\n");
 			return false;
@@ -316,7 +316,7 @@ bool LoadPatternData(std::ifstream& file)
 			}
 			else if (ch == 'T' || ch == 'K')
 			{
-				if (i + 1 > value.size())
+				if (i + 1 >= value.size())
 				{
 					Log("Value is invalid or empty. index", i, ":", ch, "\n");
 					return false;
@@ -337,7 +337,7 @@ bool LoadPatternData(std::ifstream& file)
 			}
 			else if (ch == 'S')
 			{
-				if (i + 1 > value.size())
+				if (i + 1 >= value.size())
 				{
 					Log("Value is invalid or empty. index", i, ":", ch, "\n");
 					return false;
@@ -459,8 +459,8 @@ bool LoadEntityData(std::ifstream& file)
 			return false;
 		}
 
-		std::string_view key(line.data(), line.data() + index);
-		std::string_view value(line.data() + index + 1, line.data() + line.size());
+		std::string key(line.data(), index);
+		std::string value(line.data() + index + 1, line.size() - index - 1);
 		if (value.empty())
 		{
 			Log("Not found Value Data.\n");

@@ -7,7 +7,13 @@ map_datas
 ㄴtitle_bg.txt
 ㄴEnding.txt
 ㄴstage
-  ㄴ
+  ㄴgame_defualt_bg.txt
+  ㄴstage_info.txt
+  ㄴstage_01.txt
+  ㄴstage_01_bg.txt
+  ㄴstage_02.txt
+  ㄴstage_02_bg.txt
+  ㄴ...
 entity_datas
 ㄴpattern.txt
 ㄴentity.txt
@@ -108,3 +114,24 @@ enemy가 가능한 행동
 	// char id
 	// D - Death
 	// operand
+
+
+
+
+
+entity data..
+
+id(char), position(IntVec2)
+위치 겹침은 무시
+size out of range 검사
+
+format?
+id=char
+position
+position
+position
+position
+position
+position
+position
+position
