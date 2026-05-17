@@ -1,6 +1,6 @@
 player_init_position=0,0
 
-id=T
+id=+
 20,20
 30,30
 40,40

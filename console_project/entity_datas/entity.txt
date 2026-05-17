@@ -38,7 +38,7 @@ default_direction=D
 end
 
 define
-id=T
+id=+
 pattern_name=clock_wise_shoot
 object_type=enemy
 default_direction=L
@@ -48,5 +48,12 @@ define
 id=B
 pattern_name=line
 object_type=enemy_bullet
+default_direction=D
+end
+
+define
+id=T
+pattern_name=upstream
+object_type=enemy
 default_direction=D
 end

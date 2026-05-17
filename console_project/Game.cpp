@@ -133,26 +133,32 @@ void StateInGame()
 	// 여기서 생성, 파괴는 이벤트 큐에 삽입 후 이번 프레임 종료 후 처리
 	// 모든 위치 값과 패턴 처리
 
-	
-	// 조작 처리
-	if (IsKey('W', KeyState::PRESS))
-	{
-		player.position.y += -1;
-	}
-	if (IsKey('A', KeyState::PRESS))
-	{
-		player.position.x += -1;
-	}
-	if (IsKey('S', KeyState::PRESS))
-	{
-		player.position.y += 1;
-	}
-	if (IsKey('D', KeyState::PRESS))
-	{
-		player.position.x += 1;
-	}
+	static int can_move = 0;
+	++can_move;
 
-	InBoundConsoleSize(player.position);
+	if (can_move >= PLAYER_MOVE_DELAY)
+	{
+		// 조작 처리
+		if (IsKey('W', KeyState::PRESS))
+		{
+			player.position.y += -1;
+		}
+		if (IsKey('A', KeyState::PRESS))
+		{
+			player.position.x += -1;
+		}
+		if (IsKey('S', KeyState::PRESS))
+		{
+			player.position.y += 1;
+		}
+		if (IsKey('D', KeyState::PRESS))
+		{
+			player.position.x += 1;
+		}
+
+		InBoundConsoleSize(player.position);
+		can_move = 0;
+	}
 
 	auto create_bullet_lambda = [](IntVec2 direction)
 		{
@@ -563,7 +569,7 @@ void GameRender()
 	// entities 돌면서 맞는 위치에 대해 id 값 쓰기
 
 	size_t index = GetIdx(player.position);
-	console_back_buffer[index] = '@';
+	console_back_buffer[index] = PLAYER_CHARACTER;
 
 	for (size_t i = 0; i < entities.size(); ++i)
 	{
@@ -580,7 +586,7 @@ void GameRender()
 			continue;
 
 		index = GetIdx(player_bullets[i].position);
-		console_back_buffer[index] = 'O';
+		console_back_buffer[index] = PLAYER_BULLET_CHARACTER;
 	}
 }
 
