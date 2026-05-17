@@ -43,3 +43,10 @@ pattern_name=test
 object_type=enemy
 default_direction=L
 end
+
+define
+id=B
+pattern_name=line
+object_type=enemy_bullet
+default_direction=D
+end

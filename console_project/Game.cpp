@@ -46,6 +46,7 @@ std::queue<Entity> spawn_event;
 
 Player player = {};
 inline std::array<PlayerBullet, MAX_PLAYER_BULLET_COUNT> player_bullets = {};
+bool update_enable = true;
 
 bool GameDataInit()
 {
@@ -159,10 +160,15 @@ void StateInGame()
 
 			while (index < player_bullets.size())
 			{
-				if (!player_bullets[index].enable)
+				if (player_bullets[index].enable)
+				{
+					++index;
 					continue;
-
-				++index;
+				}
+				else
+				{
+					break;
+				}
 			}
 
 			if (index >= player_bullets.size())
@@ -225,6 +231,18 @@ void StateInGame()
 			else if (instruct == 'F')
 			{
 				EntityMove(entity.position, entity.direction, Direction::FORWARD, pattern[index + 1]);
+				if (entity.object_type == ObjectType::ENEMY)
+				{
+					InBoundConsoleSize(entity.position);
+				}
+				else if (entity.object_type == ObjectType::ENEMY_BULLET)
+				{
+					if (IsOutofConsoleSize(entity.position))
+					{
+						destroy_event.push(i);
+						break;
+					}
+				}
 				index += 2;
 			}
 			else if (instruct == 'B')
@@ -304,6 +322,8 @@ void StateInGame()
 			}
 		}
 	}
+
+	game_state = State::COLLISION;
 }
 
 void StateCollision()
@@ -345,6 +365,7 @@ void StateCollision()
 			if (entities[i].position == player.position)
 			{
 				game_state = State::DEFEAT;
+				return;
 			}
 		}
 	}
@@ -400,11 +421,13 @@ void StateEntitiesLifeManagement()
 
 		if (entities[i].enable)
 		{
+			update_enable = false;
 			game_state = State::IN_GAME;
 			return;
 		}
 	}
 
+	update_enable = false;
 	game_state = State::CLEAR;
 }
 
@@ -415,17 +438,20 @@ void StateClear()
 	// 없다면 게임 클리어.
 	// game 상태를 종료하고 victory 상태로 변경.
 
-	++current_stage;
+	
 
-	if (current_stage >= stage_datas.size())
+	if (current_stage + 1 >= stage_datas.size())
 	{
 		game_state = State::GAME_INIT;
 		current_scene = Scene::VICTORY;
 	}
 	else
 	{
+		++current_stage;
 		game_state = State::STAGE_READY;
 	}
+
+	update_enable = false;
 }
 
 void StateDefeat()
@@ -435,39 +461,45 @@ void StateDefeat()
 
 	game_state = State::GAME_INIT;
 	current_scene = Scene::DEFEAT;
+
+	update_enable = false;
 }
 
 void GameUpdate()
 {
 	// TODO. 더럽게 많은 인 게임 로직
 	// stage 전환 scene 전환 entuty 로직 등을 전부 넣으세요~
-	
-	switch (game_state)
+	update_enable = true;
+
+	while (update_enable)
 	{
-	case State::GAME_INIT:
-		StateGameInit();
-		break;
-	case State::STAGE_READY:
-		StateStageReady();
-		break;
-	case State::IN_GAME:
-		StateInGame();
-		break;
-	case State::COLLISION:
-		StateCollision();
-		break;
-	case State::ENTITIES_LIFE_MANAGEMENT:
-		StateEntitiesLifeManagement();
-		break;
-	case State::CLEAR:
-		StateClear();
-		break;
-	case State::DEFEAT:
-		StateDefeat();
-		break;
-	default:
-		Log("Critical error. not found game state.\n");
-		return;
+		switch (game_state)
+		{
+		case State::GAME_INIT:
+			StateGameInit();
+			break;
+		case State::STAGE_READY:
+			StateStageReady();
+			break;
+		case State::IN_GAME:
+			StateInGame();
+			break;
+		case State::COLLISION:
+			StateCollision();
+			break;
+		case State::ENTITIES_LIFE_MANAGEMENT:
+			StateEntitiesLifeManagement();
+			break;
+		case State::CLEAR:
+			StateClear();
+			break;
+		case State::DEFEAT:
+			StateDefeat();
+			break;
+		default:
+			Log("Critical error. not found game state.\n");
+			return;
+		}
 	}
 
 	// 업데이트에서 할 일
@@ -550,7 +582,7 @@ void GameRender()
 			continue;
 
 		index = GetIdx(entities[i].position);
-		index = entities[i].id;
+		console_back_buffer[index] = entities[i].id;
 	}
 
 	for (size_t i = 0; i < player_bullets.size(); ++i)
@@ -559,7 +591,7 @@ void GameRender()
 			continue;
 
 		index = GetIdx(player_bullets[i].position);
-		index = 'O';
+		console_back_buffer[index] = 'O';
 	}
 }
 
@@ -644,15 +676,15 @@ bool LoadStageData(std::ifstream& file)
 			}
 			else if (key == "player_init_position")
 			{
-				index = line.find(',');
+				index = value.find(',');
 				if (index == std::string::npos)
 				{
 					Log("Not found position.\n");
 					return false;
 				}
 
-				std::string left(line.data(), index);
-				std::string right(line.data() + index + 1, line.size() - index - 1);
+				std::string left(value.data(), index);
+				std::string right(value.data() + index + 1, value.size() - index - 1);
 
 				if (left.empty() || right.empty())
 				{
@@ -675,7 +707,7 @@ bool LoadStageData(std::ifstream& file)
 				}
 
 				IntVec2 position = { x, y };
-				stage_datas[stage_datas.size() - 1].player_init_position = position;
+				player_init_position = position;
 				continue;
 			}
 			
@@ -737,6 +769,10 @@ bool LoadStageData(std::ifstream& file)
 	{
 		Log("Not define player init position.\n");
 		return false;
+	}
+	else
+	{
+		stage_datas[stage_datas.size() - 1].player_init_position = player_init_position;
 	}
 
 	return true;

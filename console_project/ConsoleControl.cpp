@@ -22,23 +22,23 @@ void CursorMove(size_t index)
 	CursorMove(position);
 }
 
-inline size_t GetIdx(IntVec2 position)
+size_t GetIdx(IntVec2 position)
 {
 	return GetIdx(position.x, position.y);
 }
 
-inline size_t GetIdx(int x, int y)
+size_t GetIdx(int x, int y)
 {
 	return y * console_size.x + x;
 }
 
-inline void InBoundConsoleSize(IntVec2& position)
+void InBoundConsoleSize(IntVec2& position)
 {
 	position.x = std::clamp(position.x, 0, console_size.x - 1);
 	position.y = std::clamp(position.y, 0, console_size.y - 1);
 }
 
-inline bool IsOutofConsoleSize(IntVec2 position)
+bool IsOutofConsoleSize(IntVec2 position)
 {
 	if (position.x < 0)
 		return true;

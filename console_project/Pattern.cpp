@@ -2,6 +2,7 @@
 #include "LogHelper.h"
 #include "structs.h"
 #include "ConsoleDatas.h"
+#include "ConsoleControl.h"
 
 void EntityWait()
 {
