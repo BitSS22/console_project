@@ -47,6 +47,15 @@ void EntityTurn(IntVec2& direction, IntVec2Rotate rotate)
 
 void SpawnEntity(IntVec2& position, IntVec2 direction, char id)
 {
+	// 설계
+
+	// 이 함수 내에서 적절한 위치의 index를 찾을 것인가?
+	// 아니면 직접 적절한 index를 넣을 것인가?
+	// 두가지 다 가능하게 만들 것인가?
+	// 아니면 그냥 함수 없이 알아서 하던지.
+
+
+
 	//// TODO. entity을 찾아 가져온다.
 	//// object type 정의 pool에서 id를 검색하고, id가 존재하지 않는다면 에러.
 	//// 찾았다면 패턴 정의를 가져오고, 생성한 entity를 적절한 컨테이너에서 활성화.

@@ -2,19 +2,24 @@
 #include <string>
 #include <filesystem>
 #include <fstream>
+#include <queue>
 #include "structs.h"
 #include "Define.h"
 #include "ConsoleDatas.h"
 #include "ConsoleControl.h"
 #include "LogHelper.h"
 #include "File.h"
+#include "Pattern.h"
 
-enum class State
+enum class State : char
 {
 	GAME_INIT,
 	STAGE_READY,
 	IN_GAME,
-	ENTITIES_LIFE_MANAGEMENT
+	COLLISION,
+	ENTITIES_LIFE_MANAGEMENT,
+	CLEAR,
+	DEFEAT
 };
 
 struct Player
@@ -29,8 +34,8 @@ char* game_defualt_bg = nullptr;
 std::vector<StageData> stage_datas = {};
 size_t current_stage = 0;
 Player player = {};
-
-
+std::queue<size_t> destroy_event;
+std::queue<Entity> spawn_event;
 
 bool GameDataInit()
 {
@@ -68,17 +73,76 @@ void StateStageReady()
 	// player position set.
 	// entites clear.
 	// entites create.
-	player.position = stage_datas[current_stage].player_init_position;
+
+	StageData& stage = stage_datas[current_stage];
+	player.position = stage.player_init_position;
+
+	for (size_t i = 0; i < entities.size(); ++i)
+	{
+		entities[i].enable = false;
+	}
+
+	for (size_t i = 0; i < stage.entity_datas.size(); ++i)
+	{
+		char& id = stage.entity_datas[i].first;
+		IntVec2& position = stage.entity_datas[i].second;
+
+		auto iter = entity_datas.find(id);
+		const EntityData& entity_data = iter->second;
+		if (iter == entity_datas.end())
+			continue;
+
+		Entity& entity = entities[i];
+		entity.id = id;
+		entity.enable = true;
+		entity.object_type = entity_data.object_type;
+		entity.position = position;
+		entity.direction = entity_data.default_direction;
+		entity.pattern = entity_data.pattern;
+		entity.instruct_iterator = 0;
+	}
+
+	game_state = State::IN_GAME;
 }
 
 void StateInGame()
 {
+	// 게임 진행중
+	// 플레이어 조작 입력
+	// 방향키 + 공격 + 무기 변경 -> 그냥 하드코딩으로 하자
+	// entities 돌면서 패턴 실행
+	// 여기서 생성, 파괴는 이벤트 큐에 삽입 후 이번 프레임 종료 후 처리
+	// 모든 위치 값과 패턴 처리
+}
 
+void StateCollision()
+{
+	// entity의 타입을 검사하며 player bullet, player와 충돌하는지 검사.
+	// 특정 그룹끼리의 충돌 처리
+	// player - enemy = player 사망 -> 스테이지 종료
+	// player - enemy_bullet = player 사망 -> 스테이지 종료
+	// player_bullet - enemy = enemy 사망
+	// object에 대해서는 아직 구현할 처리 없음
 }
 
 void StateEntitiesLifeManagement()
 {
+	// event queue에 들어온 event 처리.
+	// destroy 먼저 처리 후, spawn 작업.
+}
 
+void StateClear()
+{
+	// 다음 스테이지가 존재하는지 검사.
+	// 존재한다면 현재 stage index 변경 후 스테이지 초기화 단계로.
+	// 없다면 게임 클리어.
+	// game 상태를 종료하고 victory 상태로 변경.
+}
+
+void StateDefeat()
+{
+	// 스테이지 종료(사망) 작업
+	// game 상태를 종료하고 defeat 상태로 변경.
 }
 
 void GameUpdate()
@@ -97,13 +161,23 @@ void GameUpdate()
 	case State::IN_GAME:
 		StateInGame();
 		break;
+	case State::COLLISION:
+		StateCollision();
+		break;
 	case State::ENTITIES_LIFE_MANAGEMENT:
 		StateEntitiesLifeManagement();
+		break;
+	case State::CLEAR:
+		StateClear();
+		break;
+	case State::DEFEAT:
+		StateDefeat();
 		break;
 	default:
 		Log("Critical error. not found game state.\n");
 		return;
 	}
+
 	// 업데이트에서 할 일
 
 	// 현재 stage 정보는 전역 변수로 가지고 있음
@@ -152,6 +226,7 @@ void GameUpdate()
 
 
 
+	// DEBUG
 	if (IsPressKey('0'))
 	{
 		current_scene = Scene::TITLE;
@@ -331,6 +406,12 @@ bool LoadStageData(std::ifstream& file)
 
 		IntVec2 position = { x, y };
 		stage_datas[current_stage_index].entity_datas.emplace_back(id, position);
+
+		if (stage_datas[current_stage_index].entity_datas.size() > entities.size())
+		{
+			Log("There are too many entities.\n");
+			return false;
+		}
 	}
 
 	if (stage_datas[current_stage_index].entity_datas.empty())
