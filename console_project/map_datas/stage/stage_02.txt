@@ -1,3 +1,5 @@
+player_init_position=2,2
+
 id=F
 2,1
 4,3

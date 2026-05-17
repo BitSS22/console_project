@@ -9,6 +9,7 @@
 #include "ConsoleControl.h"
 #include "LogHelper.h"
 #include "File.h"
+#include "Entity.h"
 #include "Pattern.h"
 
 enum class State : char
@@ -28,14 +29,23 @@ struct Player
 	IntVec2 direction;
 };
 
+struct PlayerBullet
+{
+	bool enable;
+	IntVec2 position;
+	IntVec2 direction;
+};
+
 static State game_state = State::GAME_INIT;
 
 char* game_defualt_bg = nullptr;
 std::vector<StageData> stage_datas = {};
 size_t current_stage = 0;
-Player player = {};
 std::queue<size_t> destroy_event;
 std::queue<Entity> spawn_event;
+
+Player player = {};
+inline std::array<PlayerBullet, MAX_PLAYER_BULLET_COUNT> player_bullets = {};
 
 bool GameDataInit()
 {
@@ -81,6 +91,10 @@ void StateStageReady()
 	{
 		entities[i].enable = false;
 	}
+	for (size_t i = 0; i < player_bullets.size(); ++i)
+	{
+		player_bullets[i].enable = false;
+	}
 
 	for (size_t i = 0; i < stage.entity_datas.size(); ++i)
 	{
@@ -107,12 +121,101 @@ void StateStageReady()
 
 void StateInGame()
 {
+	// 뭔가 구조가 일관성 없이 기괴해지는 느낌이 든다
+	// 아주 기모찌가 더티하다.
+	
+
 	// 게임 진행중
 	// 플레이어 조작 입력
 	// 방향키 + 공격 + 무기 변경 -> 그냥 하드코딩으로 하자
 	// entities 돌면서 패턴 실행
 	// 여기서 생성, 파괴는 이벤트 큐에 삽입 후 이번 프레임 종료 후 처리
 	// 모든 위치 값과 패턴 처리
+
+	// 조작 처리
+	if (IsPressKey('W'))
+	{
+		player.position.y += -1;
+	}
+	if (IsPressKey('A'))
+	{
+		player.position.x += -1;
+	}
+	if (IsPressKey('S'))
+	{
+		player.position.y += 1;
+	}
+	if (IsPressKey('D'))
+	{
+		player.position.x += 1;
+	}
+
+	InBoundConsoleSize(player.position);
+
+	auto create_bullet_lambda = [](IntVec2 direction)
+		{
+			size_t index = 0;
+
+			while (index < player_bullets.size())
+			{
+				if (!player_bullets[index].enable)
+					continue;
+
+				++index;
+			}
+
+			if (index >= player_bullets.size())
+				return;
+
+			player_bullets[index].enable = true;
+			player_bullets[index].position = player.position;
+			player_bullets[index].direction = direction;
+		};
+
+	if (IsPressKey(VK_UP))
+	{
+		create_bullet_lambda(IntVec2::UP());
+	}
+	if (IsPressKey(VK_LEFT))
+	{
+		create_bullet_lambda(IntVec2::LEFT());
+	}
+	if (IsPressKey(VK_DOWN))
+	{
+		create_bullet_lambda(IntVec2::DOWN());
+	}
+	if (IsPressKey(VK_RIGHT))
+	{
+		create_bullet_lambda(IntVec2::RIGHT());
+	}
+
+	// player bullets iteration
+	for (size_t i = 0; i < player_bullets.size(); ++i)
+	{
+		if (!player_bullets[i].enable)
+			continue;
+
+		player_bullets[i].position += player_bullets[i].direction;
+		if (IsOutofConsoleSize(player_bullets[i].position))
+			player_bullets[i].enable = false;
+	}
+
+	// entities iteration
+	for (size_t i = 0; i < entities.size(); ++i)
+	{
+		Entity& entity = entities[i];
+		if (!entity.enable)
+			continue;
+
+		std::string_view pattern = entity.pattern;
+		size_t& index = entity.instruct_iterator;
+
+		while (true)
+		{
+			char instruct = pattern[index];
+
+		}
+	}
 }
 
 void StateCollision()
@@ -123,12 +226,86 @@ void StateCollision()
 	// player - enemy_bullet = player 사망 -> 스테이지 종료
 	// player_bullet - enemy = enemy 사망
 	// object에 대해서는 아직 구현할 처리 없음
+
+	for (size_t i = 0; i < player_bullets.size(); ++i)
+	{
+		if (!player_bullets[i].enable)
+			continue;
+
+		for (size_t j = 0; j < entities.size(); ++j)
+		{
+			if (!entities[j].enable)
+				continue;
+
+			if (player_bullets[i].position == entities[j].position)
+			{
+				player_bullets[i].enable = false;
+				destroy_event.push(j);
+				break;
+			}
+		}
+	}
+
+	for (size_t i = 0; i < entities.size(); ++i)
+	{
+		if (!entities[i].enable)
+			continue;
+
+		if (entities[i].object_type == ObjectType::ENEMY
+		|| entities[i].object_type == ObjectType::ENEMY_BULLET)
+		{
+			if (entities[i].position == player.position)
+			{
+				game_state = State::DEFEAT;
+			}
+		}
+	}
+
+	game_state = State::ENTITIES_LIFE_MANAGEMENT;
 }
 
 void StateEntitiesLifeManagement()
 {
 	// event queue에 들어온 event 처리.
 	// destroy 먼저 처리 후, spawn 작업.
+
+	while (!destroy_event.empty())
+	{
+		size_t& index = destroy_event.front();
+		
+		entities[index].enable = false;
+
+		destroy_event.pop();
+	}
+
+	size_t index = 0;
+
+	while (!spawn_event.empty())
+	{
+		Entity& entity = spawn_event.front();
+
+		while (index < entities.size())
+		{
+			if (!entities[index].enable)
+			{
+				break;
+			}
+			++index;
+		}
+
+		if (index >= entities.size())
+		{
+			Log("Entity Spawn fail. over the max entity capacity.\n");
+			spawn_event = {};
+			break;
+		}
+
+		entities[index] = entity;
+
+		spawn_event.pop();
+	}
+
+	game_state = State::IN_GAME;
 }
 
 void StateClear()
@@ -137,12 +314,28 @@ void StateClear()
 	// 존재한다면 현재 stage index 변경 후 스테이지 초기화 단계로.
 	// 없다면 게임 클리어.
 	// game 상태를 종료하고 victory 상태로 변경.
+
+	++current_stage;
+
+	if (current_stage >= stage_datas.size())
+	{
+		game_state = State::GAME_INIT;
+		current_scene = Scene::VICTORY;
+	}
+	else
+	{
+		game_state = State::STAGE_READY;
+	}
+
 }
 
 void StateDefeat()
 {
 	// 스테이지 종료(사망) 작업
 	// game 상태를 종료하고 defeat 상태로 변경.
+
+	game_state = State::GAME_INIT;
+	current_scene = Scene::DEFEAT;
 }
 
 void GameUpdate()

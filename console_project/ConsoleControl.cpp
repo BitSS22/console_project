@@ -1,6 +1,7 @@
 #include "ConsoleControl.h"
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include "ConsoleDatas.h"
 
 bool IsPressKey(unsigned char key)
@@ -21,4 +22,23 @@ inline size_t GetIdx(IntVec2 position)
 inline size_t GetIdx(int x, int y)
 {
 	return y * console_size.x + x;
+}
+
+inline void InBoundConsoleSize(IntVec2& position)
+{
+	position.x = std::clamp(position.x, 0, console_size.x - 1);
+	position.y = std::clamp(position.y, 0, console_size.y - 1);
+}
+
+inline bool IsOutofConsoleSize(IntVec2 position)
+{
+	if (position.x < 0)
+		return true;
+	if (position.x >= console_size.x)
+		return true;
+	if (position.y < 0)
+		return true;
+	if (position.y >= console_size.y)
+		return true;
+	return false;
 }

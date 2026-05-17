@@ -21,7 +21,6 @@ inline std::array<Key, (std::numeric_limits<unsigned char>::max)() + 1> KeyList 
 inline Scene current_scene = Scene::ENUM_SIZE;
 
 inline std::array<Entity, MAX_ENTITY_COUNT> entities = {};
-inline std::array<Entity, MAX_PLAYER_BULLET_COUNT> player_bullets = {};
 
 inline constexpr int count_of_second = COUNT_OF_SECOND;
 inline constexpr int target_delta_time = count_of_second / TARGET_FRAME;

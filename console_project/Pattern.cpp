@@ -49,6 +49,9 @@ void SpawnEntity(IntVec2& position, IntVec2 direction, char id)
 {
 	// 설계
 
+	// entity에 대한 데이터 작성 후 이벤트 큐에 넣고 이 함수는 종료
+
+
 	// 이 함수 내에서 적절한 위치의 index를 찾을 것인가?
 	// 아니면 직접 적절한 index를 넣을 것인가?
 	// 두가지 다 가능하게 만들 것인가?
