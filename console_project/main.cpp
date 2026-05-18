@@ -550,7 +550,7 @@ void KeyCheck()
 	{
 		Key& key = KeyList[i];
 
-		if (GetAsyncKeyState(key.type) & 0x8001) // 이번 프레임 키가 눌림
+		if (GetAsyncKeyState(key.type) & 0x8000) // 이번 프레임 키가 눌림
 		{
 			if (key.down == true) // 이전 프레임 키가 눌림
 			{

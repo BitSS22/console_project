@@ -103,9 +103,10 @@ void StateStageReady()
 		IntVec2& position = stage.entity_datas[i].second;
 
 		auto iter = entity_datas.find(id);
-		const EntityData& entity_data = iter->second;
 		if (iter == entity_datas.end())
 			continue;
+
+		const EntityData& entity_data = iter->second;
 
 		Entity& entity = entities[i];
 		entity.id = id;
@@ -254,16 +255,52 @@ void StateInGame()
 			else if (instruct == 'B')
 			{
 				EntityMove(entity.position, entity.direction, Direction::BACK, pattern[index + 1]);
+				if (entity.object_type == ObjectType::ENEMY)
+				{
+					InBoundConsoleSize(entity.position);
+				}
+				else if (entity.object_type == ObjectType::ENEMY_BULLET)
+				{
+					if (IsOutofConsoleSize(entity.position))
+					{
+						destroy_event.push(i);
+						break;
+					}
+				}
 				index += 2;
 			}
 			else if (instruct == 'L')
 			{
 				EntityMove(entity.position, entity.direction, Direction::LEFT, pattern[index + 1]);
+				if (entity.object_type == ObjectType::ENEMY)
+				{
+					InBoundConsoleSize(entity.position);
+				}
+				else if (entity.object_type == ObjectType::ENEMY_BULLET)
+				{
+					if (IsOutofConsoleSize(entity.position))
+					{
+						destroy_event.push(i);
+						break;
+					}
+				}
 				index += 2;
 			}
 			else if (instruct == 'R')
 			{
 				EntityMove(entity.position, entity.direction, Direction::RIGHT, pattern[index + 1]);
+				if (entity.object_type == ObjectType::ENEMY)
+				{
+					InBoundConsoleSize(entity.position);
+				}
+				else if (entity.object_type == ObjectType::ENEMY_BULLET)
+				{
+					if (IsOutofConsoleSize(entity.position))
+					{
+						destroy_event.push(i);
+						break;
+					}
+				}
 				index += 2;
 			}
 			else if (instruct == 'T')
